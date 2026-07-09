@@ -42,6 +42,15 @@ h1{font-family:"Fraunces",Georgia,serif;font-weight:640;font-size:clamp(28px,4.2
 .lede{color:var(--sec);max-width:78ch;font-size:15px}
 .lede b{color:var(--ink)}
 
+/* data-source banner */
+.srcbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px;padding:11px 16px;border:1px solid var(--line);border-radius:12px;background:rgba(233,203,123,.05);font-size:13px;color:var(--sec)}
+.srcbar .pill{flex:none;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0d1320;background:var(--accent);border-radius:999px;padding:5px 11px}
+.srcbar .pill .dot{width:7px;height:7px;border-radius:50%;background:#0d1320;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.srcbar b{color:var(--ink)}
+
+.empty{padding:26px 8px;text-align:center;font-size:13px;color:var(--faint)}
+
 /* filters */
 .filters{position:sticky;top:0;z-index:40;background:rgba(11,15,20,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--hair);padding:12px 0;margin-top:26px}
 .filters .row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
@@ -137,6 +146,12 @@ footer a{color:var(--sec)}
     <a href="https://github.com/Kalajar2000/test-task-upwork/blob/claude/upwork-lead-gen-system-oouaha/pipeline/build_dashboard_data.py">pipeline</a> strips it at source).
     No chart library — every mark is hand-rolled SVG.
   </p>
+  <div class="srcbar">
+    <span class="pill"><span class="dot"></span>Data source</span>
+    <span>Currently fed from a <b>static CSV snapshot</b> (the provided export, May 6–24).
+    In production the same pipeline points at <b>Close CRM + Meta Ads via API/webhook</b> and this page updates itself —
+    the data contract is already defined, so going live is <b>configuration, not a rebuild</b>.</span>
+  </div>
 </header>
 
 <div class="filters">
@@ -144,6 +159,7 @@ footer a{color:var(--sec)}
     <div class="fgroup" id="f-source"><span class="lbl">Source</span></div>
     <div class="fgroup" id="f-grade"><span class="lbl">Grade</span></div>
     <div class="fgroup" id="f-medium"><span class="lbl">Placement</span></div>
+    <div class="fgroup" id="f-dates"><span class="lbl">Dates</span></div>
     <button class="reset" id="f-reset">Reset filters</button>
   </div>
 </div>
@@ -322,8 +338,15 @@ function showTip(html, x, y){
 }
 const hideTip = () => tip.style.opacity = 0;
 
+/* empty state */
+function emptyState(el){
+  el.innerHTML = '<p class="empty">No rows match these filters — loosen one or hit "Reset filters".</p>';
+}
+
 /* generic horizontal bar chart */
 function barsH(el, items, opts={}){
+  items = items.filter(i=>i.v>0 || items.every(x=>x.v===0));
+  if(!items.length || items.every(i=>i.v===0)) return emptyState(el);
   const o = Object.assign({color:BLUE, vfmt:fmt, height:null, tip:null}, opts);
   const W = el.clientWidth || 400, rowH = 30, pad = 4;
   const H = o.height || items.length * rowH + pad*2;
@@ -350,6 +373,7 @@ function barsH(el, items, opts={}){
 
 /* funnel (horizontal ordinal bars with stage conversion) */
 function funnel(el, stages){
+  if(!stages[0].v) return emptyState(el);
   const W = el.clientWidth || 400, rowH = 52, H = stages.length*rowH;
   const max = stages[0].v || 1, labelW = 8, barMax = W - 90;
   let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">`;
@@ -410,10 +434,22 @@ function lineChart(el, pts){
 }
 
 /* ============ filters ============ */
-const state = { s:"All", g:"All", m:"All" };
+const state = { s:"All", g:"All", m:"All", d:"All" };
 const SOURCES = ["All","Instagram","Facebook","Email","Untracked","Other"];
 const GRADES  = ["All","A","B","C","D"];
 const MEDIUMS = ["All","Reels","Feed","Stories","Video","Social","Untracked","Other"];
+
+/* date presets: whole range split into thirds, labeled with real dates */
+const ALLDATES = [...new Set(ROWS.map(r=>r.d).filter(Boolean))].sort();
+const third = Math.ceil(ALLDATES.length/3);
+const DPRESETS = { "All": null };
+[[0,third],[third,third*2],[third*2,ALLDATES.length]].forEach(([a,b])=>{
+  const slice = ALLDATES.slice(a,b);
+  if(!slice.length) return;
+  const lbl = slice[0].slice(5).replace("-","/") + "–" + slice[slice.length-1].slice(5).replace("-","/");
+  DPRESETS[lbl] = new Set(slice);
+});
+const DATES = Object.keys(DPRESETS);
 
 function chips(elId, values, key){
   const host = document.getElementById(elId);
@@ -426,18 +462,19 @@ function chips(elId, values, key){
   });
 }
 function syncChips(){
-  [["f-source",SOURCES,"s"],["f-grade",GRADES,"g"],["f-medium",MEDIUMS,"m"]].forEach(([id,vals,key])=>{
+  [["f-source",SOURCES,"s"],["f-grade",GRADES,"g"],["f-medium",MEDIUMS,"m"],["f-dates",DATES,"d"]].forEach(([id,vals,key])=>{
     [...document.getElementById(id).querySelectorAll(".chip")].forEach((c,i)=>
       c.classList.toggle("on", state[key]===vals[i]));
   });
 }
-chips("f-source",SOURCES,"s"); chips("f-grade",GRADES,"g"); chips("f-medium",MEDIUMS,"m");
-document.getElementById("f-reset").addEventListener("click", ()=>{ state.s=state.g=state.m="All"; syncChips(); render(); });
+chips("f-source",SOURCES,"s"); chips("f-grade",GRADES,"g"); chips("f-medium",MEDIUMS,"m"); chips("f-dates",DATES,"d");
+document.getElementById("f-reset").addEventListener("click", ()=>{ state.s=state.g=state.m=state.d="All"; syncChips(); render(); });
 
 const filtered = () => ROWS.filter(r =>
   (state.s==="All" || r.s===state.s) &&
   (state.g==="All" || r.g===state.g) &&
-  (state.m==="All" || r.m===state.m));
+  (state.m==="All" || r.m===state.m) &&
+  (state.d==="All" || (DPRESETS[state.d] && DPRESETS[state.d].has(r.d))));
 
 /* ============ render ============ */
 let sortKey = "cash", sortDir = -1, showAll = false;
@@ -465,17 +502,20 @@ function render(){
     {label:"Booked a call", v:booked},
     {label:"Closed", v:closed},
   ]);
-  document.getElementById("in-funnel").innerHTML =
-    `Overall <b>${pct(closed,leads)}</b> lead→close. The big cliff is CRM→booked (<b>${pct(booked,crm)}</b>) — that's a speed-to-lead and setter problem, not a traffic problem.`;
+  document.getElementById("in-funnel").innerHTML = leads
+    ? `Overall <b>${pct(closed,leads)}</b> lead→close. The big cliff is CRM→booked (<b>${pct(booked,crm)}</b>) — that's a speed-to-lead and setter problem, not a traffic problem.`
+    : `Nothing to measure here — no leads match the current filters.`;
 
   /* daily */
   const byDay = {};
   rows.forEach(r=>{ if(!r.d) return; byDay[r.d] = byDay[r.d]||{v:0,cash:0}; byDay[r.d].v++; byDay[r.d].cash+=r.cash; });
   const days = Object.keys(byDay).sort().map(d=>({label:d, v:byDay[d].v, cash:byDay[d].cash}));
   if(days.length) lineChart(document.getElementById("ch-daily"), days);
+  else emptyState(document.getElementById("ch-daily"));
   const peak = days.reduce((a,b)=>b.v>a.v?b:a, {v:0,label:"–"});
-  document.getElementById("in-daily").innerHTML =
-    `Peak day <b>${peak.label}</b> with <b>${fmt(peak.v)}</b> leads — capture concentrates hard around the webinar push; setters need surge capacity on exactly these days.`;
+  document.getElementById("in-daily").innerHTML = days.length
+    ? `Peak day <b>${peak.label}</b> with <b>${fmt(peak.v)}</b> leads — capture concentrates hard around the webinar push; setters need surge capacity on exactly these days.`
+    : `No captures in this filter window.`;
 
   /* by source (two charts, one measure each — never a dual axis) */
   const agg = (key, val) => {
@@ -485,7 +525,7 @@ function render(){
   };
   barsH(document.getElementById("ch-src-leads"), agg("s").slice(0,6), {color:BLUE});
   barsH(document.getElementById("ch-src-cash"), agg("s", r=>r.cash).filter(i=>i.v>0).slice(0,6), {color:AQUA, vfmt:moneyK});
-  barsH(document.getElementById("ch-medium"), agg("m").filter(i=>i.label!=="Untracked").slice(0,6), {color:BLUE});
+  barsH(document.getElementById("ch-medium"), agg("m").slice(0,7), {color:BLUE});
   if(state.s==="All" && state.g==="All" && state.m==="All"){
     document.getElementById("in-source").innerHTML =
       `<b>Instagram is the engine</b> (3,156 leads, ~$104K) while <b>Facebook under-monetizes badly</b> (1,229 leads → $6.8K). ` +
@@ -511,12 +551,12 @@ function render(){
   const cols = [["c","Campaign / creative"],["leads","Leads"],["bk","Booked"],["cl","Closed"],["cash","Cash"],["cpl","$ / lead"]];
   document.getElementById("board").innerHTML =
     `<thead><tr>${cols.map(([k,l])=>`<th data-k="${k}" class="${sortKey===k?"on":""}">${l} <span class="dir">${sortKey===k?(sortDir<0?"▼":"▲"):""}</span></th>`).join("")}</tr></thead>` +
-    `<tbody>${view.map(x=>`<tr>
+    `<tbody>${view.length ? view.map(x=>`<tr>
       <td title="${esc(x.c)}">${esc(x.c)}</td>
       <td>${fmt(x.leads)}</td><td>${fmt(x.bk)}</td><td>${fmt(x.cl)}</td>
       <td><span class="bar" style="width:${Math.max(2,x.cash/maxCash*70)}px"></span>${money(x.cash)}</td>
       <td>${x.cash? "$"+x.cpl.toFixed(0) : "–"}</td>
-    </tr>`).join("")}</tbody>`;
+    </tr>`).join("") : `<tr><td colspan="6" style="text-align:center;color:var(--faint);padding:22px">No campaigns match these filters.</td></tr>`}</tbody>`;
   document.getElementById("board").querySelectorAll("th").forEach(th=>{
     th.addEventListener("click", ()=>{
       const k = th.dataset.k;
@@ -540,7 +580,7 @@ function render(){
     tip: it => { const x = gm.find(y=>`Grade ${y.g}`===it.label);
       return `<span class="t">${it.label}</span><b>${money(x.cash)}</b> collected<br>close rate ${pct(x.cl,x.n)}`; }});
   const B = gm[1], C = gm[2], D = gm[3];
-  document.getElementById("in-grade").innerHTML = (D.cash > C.cash)
+  document.getElementById("in-grade").innerHTML = !leads ? "No graded rows in view." : (D.cash > C.cash)
     ? `<b>The score is miscalibrated:</b> D-grades collected <b>${money(D.cash)}</b> vs C-grades' ${money(C.cash)} — the model under-ranks real buyers. Retrain on revenue, not form completeness.`
     : `In this filtered view grades rank as designed (B ${moneyK(B.cash)} · C ${moneyK(C.cash)} · D ${moneyK(D.cash)}).`;
 
