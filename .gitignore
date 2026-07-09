@@ -1,0 +1,16 @@
+# Data with PII never enters this public repo — the pipeline reads it locally
+# and only aggregated, anonymized JSON is committed (site/dashboard/data.json).
+pipeline/data/
+*.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Skills Test — Santiago Correal</title>
+<meta name="description" content="Deliverables for the Yellow House Systems AI skills test: landing page, data dashboard, image ads, and system documentation.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Cpath d='M9 22l7-12 7 12z' fill='none' stroke='%23e9cb7b' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,640&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14; --panel:#111722; --ink:#eef1f6; --muted:#93a0b4; --faint:#5c6a7e;
+  --accent:#e9cb7b; --line:rgba(233,203,123,.16); --line-soft:rgba(238,241,246,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Inter",-apple-system,sans-serif;font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{width:min(880px,100% - 40px);margin-inline:auto}
+header{padding:72px 0 20px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:"Fraunces",Georgia,serif;font-weight:640;font-size:clamp(32px,5vw,46px);line-height:1.1;letter-spacing:-.01em;margin:14px 0 12px}
+.lede{color:var(--muted);max-width:60ch}
+.lede a{color:var(--accent);text-decoration:none}
+main{padding:36px 0 40px;display:grid;gap:14px}
+.card{
+  display:block;text-decoration:none;color:inherit;
+  border:1px solid var(--line-soft);border-radius:16px;background:var(--panel);
+  padding:26px 28px;transition:border-color .2s ease,transform .2s ease;
+  position:relative;
+}
+a.card:hover{border-color:var(--line);transform:translateY(-2px)}
+.card .row{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.card h2{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.card h2 .n{color:var(--faint);font-family:"Fraunces",serif;font-style:italic;font-weight:500;margin-right:10px}
+.card p{color:var(--muted);font-size:15px;margin-top:8px;max-width:64ch}
+.status{flex:none;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:5px 12px}
+.status.live{color:#3ddc97;background:rgba(61,220,151,.1);border:1px solid rgba(61,220,151,.3)}
+.status.soon{color:var(--faint);background:rgba(147,160,180,.08);border:1px solid var(--line-soft)}
+.arrow{color:var(--accent);font-weight:700}
+footer{border-top:1px solid var(--line-soft);padding:28px 0 56px;color:var(--faint);font-size:13.5px}
+footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="eyebrow">AI Skills Test · Yellow House Systems</p>
+  <h1>Four deliverables, built as systems.</h1>
+  <p class="lede">
+    Everything here was built from scratch for this assessment — code, pipeline and process are public in
+    <a href="https://github.com/Kalajar2000/test-task-upwork" rel="noopener">the repository</a>.
+    By Santiago Correal.
+  </p>
+</header>
+
+<main class="wrap">
+  <a class="card" href="./landing-page/">
+    <div class="row"><h2><span class="n">01</span>Landing page</h2><span class="status live">Live</span></div>
+    <p>The Halal Money Masterclass registration page, rebuilt from scratch — no builder, no template. One hand-written file: live countdown, registration modal with validation, FAQ, compliance footer, structured data.</p>
+  </a>
+
+  <div class="card">
+    <div class="row"><h2><span class="n">02</span>Data dashboard</h2><span class="status soon">In build</span></div>
+    <p>5,257 leads → funnel, revenue attribution by ad creative, lead quality by channel, audience insights. Aggregated by a Python pipeline; no lead PII ships to this public site.</p>
+  </div>
+
+  <div class="card">
+    <div class="row"><h2><span class="n">03</span>Image ads</h2><span class="status soon">In build</span></div>
+    <p>25 image ads generated from a creative matrix reverse-engineered from the funnel's own winning campaigns — prompts and QA process included.</p>
+  </div>
+
+  <div class="card">
+    <div class="row"><h2><span class="n">04</span>System write-up</h2><span class="status soon">In build</span></div>
+    <p>Architecture and SOPs: how the most complex system I've built works — and how this repo mirrors it in miniature.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">Built by Santiago Correal · <a href="https://github.com/Kalajar2000/test-task-upwork" rel="noopener">Source on GitHub</a></div>
+</footer>
+</body>
+</html>
