@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  Deliverable 02 — Funnel dashboard (custom-coded)
+  No chart library, no framework: hand-rolled SVG charts over an anonymized
+  row-level dataset (see ../../pipeline/build_dashboard_data.py — PII never
+  enters this public repo). All aggregation happens client-side, so the
+  filters recompute every chart from raw rows. Palette validated for CVD
+  and contrast against this surface with the six-checks validator.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Funnel Dashboard — 18 Days, Measured</title>
+<meta name="description" content="Interactive funnel dashboard: 5,257 leads, revenue attribution by creative, lead-quality calibration and audience insights — built from scratch.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Cpath d='M7 22V13m6 9V8m6 14v-6m6 6V11' stroke='%23e9cb7b' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,640&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../landing-page/shared/tour.css">
+<style>
+:root{
+  --bg:#0b0f14; --panel:#111722; --panel-2:#0d1320;
+  --ink:#eef1f6; --sec:#93a0b4; --faint:#5c6a7e;
+  --accent:#e9cb7b;
+  --blue:#3987e5; --aqua:#199e70; --amber:#c98500; --violet:#9085e9; --red:#e66767;
+  --line:rgba(233,203,123,.16); --hair:rgba(238,241,246,.07);
+  --up:#3ddc97; --down:#e66767;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:"Inter",-apple-system,sans-serif;font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+svg{display:block}
+a{color:inherit}
+.wrap{width:min(1240px,100% - 40px);margin-inline:auto}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+header.page{padding:52px 0 10px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:"Fraunces",Georgia,serif;font-weight:640;font-size:clamp(28px,4.2vw,42px);line-height:1.1;letter-spacing:-.01em;margin:12px 0 10px}
+.lede{color:var(--sec);max-width:78ch;font-size:15px}
+.lede b{color:var(--ink)}
+
+/* filters */
+.filters{position:sticky;top:0;z-index:40;background:rgba(11,15,20,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--hair);padding:12px 0;margin-top:26px}
+.filters .row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.fgroup{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.fgroup .lbl{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-right:2px}
+.chip{font:600 13px/1 "Inter",sans-serif;color:var(--sec);background:none;border:1px solid var(--hair);border-radius:999px;padding:7px 13px;cursor:pointer;transition:all .12s ease}
+.chip:hover{color:var(--ink);border-color:var(--line)}
+.chip.on{color:#0d1320;background:var(--accent);border-color:var(--accent);font-weight:700}
+.reset{margin-left:auto;font-size:12.5px;color:var(--faint);background:none;border:none;cursor:pointer;text-decoration:underline}
+.reset:hover{color:var(--sec)}
+
+/* grid + cards */
+main{padding:26px 0 30px;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{grid-column:span 12;background:var(--panel);border:1px solid var(--hair);border-radius:16px;padding:20px 22px 18px;min-width:0}
+.card h2{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.card .sub{font-size:12.5px;color:var(--faint);margin:2px 0 14px}
+.card .insight{margin-top:12px;padding:10px 14px;border-left:3px solid var(--accent);background:rgba(233,203,123,.05);border-radius:0 10px 10px 0;font-size:13px;color:var(--sec)}
+.card .insight b{color:var(--ink)}
+.span3{grid-column:span 3}.span4{grid-column:span 4}.span5{grid-column:span 5}
+.span6{grid-column:span 6}.span7{grid-column:span 7}.span8{grid-column:span 8}
+
+/* KPI tiles */
+.kpis{grid-column:span 12;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.kpi{background:var(--panel);border:1px solid var(--hair);border-radius:16px;padding:18px 20px}
+.kpi .k{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.kpi .v{font-family:"Fraunces",Georgia,serif;font-weight:640;font-size:clamp(26px,2.6vw,34px);line-height:1.15;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:12.5px;color:var(--sec)}
+.kpi .s b{color:var(--ink)}
+
+/* section headers */
+.sect{grid-column:span 12;padding:26px 2px 2px}
+.sect h2{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:22px;letter-spacing:-.01em}
+.sect p{font-size:13.5px;color:var(--faint);margin-top:2px}
+
+/* charts */
+.chart{position:relative}
+.chart svg text{font-family:"Inter",sans-serif}
+.axis{font-size:11px;fill:var(--faint)}
+.dlabel{font-size:11.5px;font-weight:700;fill:var(--ink);font-variant-numeric:tabular-nums}
+.dlabel.out{fill:var(--sec)}
+.gridline{stroke:var(--hair);stroke-width:1}
+.baseline{stroke:rgba(238,241,246,.16);stroke-width:1}
+
+/* tooltip */
+#tip{position:fixed;z-index:80;pointer-events:none;background:#0d1320;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:12.5px;color:var(--sec);box-shadow:0 10px 34px rgba(0,0,0,.5);opacity:0;transition:opacity .1s ease;max-width:280px}
+#tip b{color:var(--ink);font-variant-numeric:tabular-nums}
+#tip .t{font-weight:700;color:var(--ink);display:block;margin-bottom:2px}
+
+/* leaderboard table */
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px}
+th{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);text-align:right;padding:8px 10px;border-bottom:1px solid var(--hair);cursor:pointer;user-select:none;white-space:nowrap}
+th:first-child{text-align:left}
+th.on{color:var(--accent)}
+th .dir{font-size:9px}
+td{padding:9px 10px;border-bottom:1px solid var(--hair);text-align:right;font-variant-numeric:tabular-nums;color:var(--sec);white-space:nowrap}
+td:first-child{text-align:left;color:var(--ink);font-weight:600;max-width:340px;overflow:hidden;text-overflow:ellipsis}
+td .bar{display:inline-block;height:6px;border-radius:3px;background:var(--aqua);margin-right:8px;vertical-align:middle}
+tr:hover td{background:rgba(238,241,246,.02)}
+.showmore{margin-top:12px;font-size:13px;font-weight:700;color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline}
+
+/* insight + metric cards */
+.cards3{grid-column:span 12;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.icard{background:var(--panel);border:1px solid var(--hair);border-radius:16px;padding:20px 22px}
+.icard .n{font-family:"Fraunces",serif;font-style:italic;color:var(--accent);font-size:14px}
+.icard h3{font-size:15.5px;font-weight:800;margin:8px 0 6px;letter-spacing:-.01em}
+.icard p{font-size:13.5px;color:var(--sec)}
+.icard p b{color:var(--ink)}
+.icard .req{margin-top:10px;font-size:11.5px;color:var(--faint)}
+.icard .req b{color:var(--sec);font-weight:700}
+
+footer{border-top:1px solid var(--hair);padding:26px 0 60px;color:var(--faint);font-size:13px;line-height:1.7}
+footer .ok{color:var(--up);font-weight:700}
+footer a{color:var(--sec)}
+
+@media (max-width:1020px){
+  .kpis{grid-template-columns:repeat(2,1fr) repeat(2,1fr)}
+  .kpis{grid-template-columns:1fr 1fr}
+  .span3,.span4,.span5,.span6,.span7,.span8{grid-column:span 12}
+  .cards3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="page wrap">
+  <p class="eyebrow">Deliverable 02 · Data Dashboard · Custom-coded</p>
+  <h1>Eighteen days of funnel, measured.</h1>
+  <p class="lede">
+    <b id="m-leads-h">5,257</b> leads captured <b id="m-range">May 6 – 24</b> for the masterclass funnel —
+    followed through the CRM to booked calls, closes and <b id="m-cash-h">$225K</b> collected.
+    Every chart recomputes live from anonymized row-level data (<b>no PII ships to this page</b> — the
+    <a href="https://github.com/Kalajar2000/test-task-upwork/blob/claude/upwork-lead-gen-system-oouaha/pipeline/build_dashboard_data.py">pipeline</a> strips it at source).
+    No chart library — every mark is hand-rolled SVG.
+  </p>
+</header>
+
+<div class="filters">
+  <div class="wrap row">
+    <div class="fgroup" id="f-source"><span class="lbl">Source</span></div>
+    <div class="fgroup" id="f-grade"><span class="lbl">Grade</span></div>
+    <div class="fgroup" id="f-medium"><span class="lbl">Placement</span></div>
+    <button class="reset" id="f-reset">Reset filters</button>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- KPI row -->
+  <div class="kpis" id="kpis"></div>
+
+  <!-- funnel + time -->
+  <div class="card span5" id="c-funnel">
+    <h2>The funnel</h2>
+    <p class="sub">Lead → CRM → booked call → closed · conversion between stages</p>
+    <div class="chart" id="ch-funnel"></div>
+    <p class="insight" id="in-funnel"></p>
+  </div>
+  <div class="card span7" id="c-daily">
+    <h2>Lead capture by day</h2>
+    <p class="sub">Daily new leads · hover for the day's detail</p>
+    <div class="chart" id="ch-daily"></div>
+    <p class="insight" id="in-daily"></p>
+  </div>
+
+  <!-- acquisition -->
+  <div class="sect"><h2>Acquisition — volume is not value</h2><p>Same channels, two different rankings. This is why lead counts alone mislead.</p></div>
+  <div class="card span4">
+    <h2>Leads by source</h2>
+    <p class="sub">Where the volume comes from</p>
+    <div class="chart" id="ch-src-leads"></div>
+  </div>
+  <div class="card span4">
+    <h2>Cash collected by source</h2>
+    <p class="sub">Where the money comes from</p>
+    <div class="chart" id="ch-src-cash"></div>
+  </div>
+  <div class="card span4">
+    <h2>Leads by placement</h2>
+    <p class="sub">Reels vs Feed vs Stories (paid social)</p>
+    <div class="chart" id="ch-medium"></div>
+  </div>
+  <div class="card" id="c-srcinsight" style="padding-top:14px;padding-bottom:14px">
+    <p class="insight" id="in-source" style="margin-top:0"></p>
+  </div>
+
+  <!-- creative leaderboard -->
+  <div class="sect"><h2>Creative leaderboard — revenue per ad, not clicks per ad</h2><p>UTM campaigns cleaned and deduplicated ("– Copy" variants merged). Sort any column.</p></div>
+  <div class="card" id="c-board">
+    <div class="tablewrap"><table id="board"></table></div>
+    <button class="showmore" id="board-more">Show all campaigns ↓</button>
+  </div>
+
+  <!-- lead quality -->
+  <div class="sect"><h2>Lead quality — does the score predict money?</h2><p>The uncomfortable chart. Grades come from the funnel's own scoring model.</p></div>
+  <div class="card span4">
+    <h2>Lead grade mix</h2>
+    <p class="sub">How the model grades the list</p>
+    <div class="chart" id="ch-grades"></div>
+  </div>
+  <div class="card span4">
+    <h2>Cash collected by grade</h2>
+    <p class="sub">What each grade actually paid</p>
+    <div class="chart" id="ch-grade-cash"></div>
+    <p class="insight" id="in-grade"></p>
+  </div>
+  <div class="card span4">
+    <h2>Closes by capital available</h2>
+    <p class="sub">Self-reported capital (next 30 days) vs closes</p>
+    <div class="chart" id="ch-capital"></div>
+    <p class="insight" id="in-capital"></p>
+  </div>
+
+  <!-- audience -->
+  <div class="sect"><h2>Who the leads actually are</h2><p id="survey-n">From the pre-webinar survey.</p></div>
+  <div class="card span6">
+    <h2>Monthly income (before tax)</h2>
+    <p class="sub">Self-reported</p>
+    <div class="chart" id="ch-income"></div>
+  </div>
+  <div class="card span6">
+    <h2>Biggest frustration</h2>
+    <p class="sub">"What frustrates you most?"</p>
+    <div class="chart" id="ch-frust"></div>
+  </div>
+  <div class="card span6">
+    <h2>Day-to-day situation</h2>
+    <p class="sub">Employment status at capture</p>
+    <div class="chart" id="ch-day"></div>
+  </div>
+  <div class="card span6">
+    <h2>How long they've followed Abu Lahya</h2>
+    <p class="sub">Audience warmth before registering</p>
+    <div class="chart" id="ch-follow"></div>
+  </div>
+
+  <!-- what I'd do -->
+  <div class="sect"><h2>What I'd do with this data</h2><p>Reading the numbers is the job; acting on them is the value.</p></div>
+  <div class="cards3">
+    <div class="icard"><span class="n">01</span><h3>Recalibrate the lead score</h3>
+      <p>B-grades earn their rank, but <b>D-grades out-collected C-grades roughly 2:1</b> — the model is inverting the middle of the list. Retrain it on <b>cash collected</b>, not survey completeness, and re-route call-slots accordingly.</p></div>
+    <div class="icard"><span class="n">02</span><h3>Treat email as the closer, not a channel</h3>
+      <p>The email list books few calls but they close at a dramatically higher rate than paid traffic. <b>Push webinar registrants into the nurture list faster</b> — the second touch is where the money is.</p></div>
+    <div class="icard"><span class="n">03</span><h3>Fix Facebook or feed it less</h3>
+      <p>Facebook delivered ~23% of leads and ~3% of cash. Before killing it: <b>split creative fatigue from audience quality</b> by running IG's top 3 creatives on FB placements only. If it still won't close, reallocate.</p></div>
+    <div class="icard"><span class="n">04</span><h3>Mind the payment-plan exposure</h3>
+      <p>Most buyers are on plans or deposits, so <b>collected ≠ contracted</b>. Track expected vs collected per cohort and chase the deposit→PIF conversion — that's silent revenue already sold.</p></div>
+    <div class="icard"><span class="n">05</span><h3>Capital sweet spot: $1K–$3K</h3>
+      <p>That bracket produced the most closes and the most cash. The "0 savings" segment is huge (2,500+ leads) but converts thin — <b>qualify harder pre-call</b> and give closers the capital answer up front.</p></div>
+    <div class="icard"><span class="n">06</span><h3>Dedupe at capture</h3>
+      <p><span id="m-dupes">38 duplicate emails and 135 duplicate phones</span> made it into the sheet. Small fix (normalize + upsert at the form), real effect: <b>cleaner attribution and no double-booked calls</b>.</p></div>
+  </div>
+
+  <!-- metrics I'd add -->
+  <div class="sect"><h2>Metrics I would add</h2><p>What this dashboard can't show yet — and exactly what it needs to show it.</p></div>
+  <div class="cards3">
+    <div class="icard"><h3>CPL / CAC / ROAS per creative</h3><p>Cash per campaign is half the picture — spend is the other half. The leaderboard is already keyed by campaign, so this is a join, not a rebuild.</p><p class="req"><b>Needs:</b> Meta Ads spend export (campaign-level, daily).</p></div>
+    <div class="icard"><h3>Show-up rate</h3><p>Registration → live attendance is THE webinar metric; every insight above sharpens once attendance is known per source and creative.</p><p class="req"><b>Needs:</b> Zoom attendance export with emails (hashed is fine).</p></div>
+    <div class="icard"><h3>Speed-to-lead</h3><p>Minutes from opt-in to first outreach vs booked-rate. Usually the single cheapest conversion win in a call funnel.</p><p class="req"><b>Needs:</b> first-touch timestamps from Close.</p></div>
+    <div class="icard"><h3>Refund & delinquency tracking</h3><p>A Refunds pipeline exists in the CRM but isn't in this export. Payment-plan funnels live or die on net revenue, not gross collected.</p><p class="req"><b>Needs:</b> refunds + missed-installment feed.</p></div>
+    <div class="icard"><h3>LTV by cohort</h3><p>Course ($4K) vs Full Program ($7K) buyers by source and month — which channel buys upgrades, not just entries.</p><p class="req"><b>Needs:</b> post-purchase transaction history.</p></div>
+    <div class="icard"><h3>Creative fatigue curves</h3><p>Cash-per-lead by creative <i>by week</i> — catch "Dumbest Thing" declining before spend does. The date + campaign keys already exist in this dataset.</p><p class="req"><b>Needs:</b> nothing — next iteration of this page.</p></div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span id="selftest">Running data self-test…</span> ·
+    Generated <span id="m-gen"></span> from an anonymized export ·
+    <a href="https://github.com/Kalajar2000/test-task-upwork/blob/claude/upwork-lead-gen-system-oouaha/pipeline/build_dashboard_data.py">pipeline source</a> ·
+    <a href="../">all deliverables</a>
+  </div>
+</footer>
+
+<div id="tip"></div>
+
+<script>
+(async function(){
+"use strict";
+
+/* ============ data ============ */
+const DATA = await fetch("./data.json").then(r => r.json());
+const ROWS = DATA.rows, META = DATA.meta;
+
+/* self-test: page must agree with the pipeline */
+(function selfTest(){
+  const c = META.checksum;
+  const ok = ROWS.length === c.leads
+    && ROWS.reduce((a,r)=>a+r.bk,0) === c.booked
+    && ROWS.reduce((a,r)=>a+r.cl,0) === c.closed
+    && Math.round(ROWS.reduce((a,r)=>a+r.cash,0)) === c.cash;
+  const el = document.getElementById("selftest");
+  el.innerHTML = ok ? '<span class="ok">✓ Data self-test passed</span> — page totals match pipeline checksums'
+                    : '⚠ Data self-test FAILED — totals differ from pipeline checksums';
+})();
+
+document.getElementById("m-gen").textContent = META.generated_utc;
+document.getElementById("m-dupes").textContent =
+  META.dupes.emails + " duplicate emails and " + META.dupes.phones + " duplicate phones";
+
+/* ============ helpers ============ */
+const fmt = n => n.toLocaleString("en-US");
+const money = n => "$" + Math.round(n).toLocaleString("en-US");
+const moneyK = n => n >= 1000 ? "$" + (n/1000).toFixed(n >= 10000 ? 0 : 1) + "K" : "$" + Math.round(n);
+const pct = (a,b) => b ? (100*a/b).toFixed(1) + "%" : "–";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const BLUE="#3987e5", AQUA="#199e70", AMBER="#c98500", VIOLET="#9085e9";
+const ORDINAL=["#86b6ef","#5598e7","#3987e5","#256abf"]; // dark-safe ordinal ramp
+
+/* tooltip */
+const tip = document.getElementById("tip");
+function showTip(html, x, y){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.min(x + 14, innerWidth - w - 10) + "px";
+  tip.style.top  = (y - h - 12 < 8 ? y + 16 : y - h - 12) + "px";
+}
+const hideTip = () => tip.style.opacity = 0;
+
+/* generic horizontal bar chart */
+function barsH(el, items, opts={}){
+  const o = Object.assign({color:BLUE, vfmt:fmt, height:null, tip:null}, opts);
+  const W = el.clientWidth || 400, rowH = 30, pad = 4;
+  const H = o.height || items.length * rowH + pad*2;
+  const max = Math.max(...items.map(i=>i.v), 1);
+  const labelW = Math.min(190, Math.max(...items.map(i=>i.label.length))*6.6+10);
+  const barMax = W - labelW - 64;
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">`;
+  items.forEach((it,i)=>{
+    const y = pad + i*rowH, bw = Math.max(2, it.v/max*barMax);
+    s += `<text class="axis" x="${labelW-8}" y="${y+rowH/2+4}" text-anchor="end">${esc(it.label.length>28?it.label.slice(0,27)+"…":it.label)}</text>`;
+    s += `<rect data-i="${i}" x="${labelW}" y="${y+7}" width="${bw}" height="${rowH-14}" rx="4" fill="${it.color||o.color}"/>`;
+    s += `<text class="dlabel out" x="${labelW+bw+7}" y="${y+rowH/2+4}">${o.vfmt(it.v)}</text>`;
+  });
+  s += `</svg>`;
+  el.innerHTML = s;
+  el.querySelectorAll("rect").forEach(r=>{
+    r.addEventListener("mousemove", e=>{
+      const it = items[+r.dataset.i];
+      showTip(o.tip ? o.tip(it) : `<span class="t">${esc(it.label)}</span><b>${o.vfmt(it.v)}</b>`, e.clientX, e.clientY);
+    });
+    r.addEventListener("mouseleave", hideTip);
+  });
+}
+
+/* funnel (horizontal ordinal bars with stage conversion) */
+function funnel(el, stages){
+  const W = el.clientWidth || 400, rowH = 52, H = stages.length*rowH;
+  const max = stages[0].v || 1, labelW = 8, barMax = W - 90;
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">`;
+  stages.forEach((st,i)=>{
+    const y = i*rowH, bw = Math.max(3, st.v/max*barMax);
+    s += `<text class="axis" x="${labelW}" y="${y+13}">${esc(st.label)}${i>0?` · <tspan class="axis" fill="#93a0b4">${pct(st.v, stages[i-1].v)} of prev</tspan>`:""}</text>`;
+    s += `<rect data-i="${i}" x="${labelW}" y="${y+20}" width="${bw}" height="18" rx="4" fill="${ORDINAL[i]}"/>`;
+    s += `<text class="dlabel" x="${labelW+bw+8}" y="${y+34}">${fmt(st.v)}</text>`;
+  });
+  s += `</svg>`;
+  el.innerHTML = s;
+  el.querySelectorAll("rect").forEach(r=>{
+    r.addEventListener("mousemove", e=>{
+      const i = +r.dataset.i, st = stages[i];
+      showTip(`<span class="t">${esc(st.label)}</span><b>${fmt(st.v)}</b> leads${i>0?`<br>${pct(st.v,stages[i-1].v)} of previous stage<br>${pct(st.v,stages[0].v)} of all leads`:""}`, e.clientX, e.clientY);
+    });
+    r.addEventListener("mouseleave", hideTip);
+  });
+}
+
+/* daily line/area with crosshair */
+function lineChart(el, pts){
+  const W = el.clientWidth || 640, H = 250, padL = 42, padR = 12, padT = 26, padB = 26;
+  const max = Math.max(...pts.map(p=>p.v), 1);
+  const iw = W - padL - padR, ih = H - padT - padB;
+  const x = i => padL + (pts.length===1 ? iw/2 : i/(pts.length-1)*iw);
+  const y = v => padT + ih - v/max*ih;
+  const ticks = 4;
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">`;
+  for(let t=0;t<=ticks;t++){
+    const v = max*t/ticks, yy = y(v);
+    s += `<line class="gridline" x1="${padL}" x2="${W-padR}" y1="${yy}" y2="${yy}"/>`;
+    s += `<text class="axis" x="${padL-7}" y="${yy+4}" text-anchor="end">${v>=1000?(v/1000).toFixed(1)+"K":Math.round(v)}</text>`;
+  }
+  const path = pts.map((p,i)=>`${i?"L":"M"}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join("");
+  s += `<path d="${path}L${x(pts.length-1)},${y(0)}L${x(0)},${y(0)}Z" fill="${BLUE}" opacity=".12"/>`;
+  s += `<path d="${path}" fill="none" stroke="${BLUE}" stroke-width="2" stroke-linejoin="round"/>`;
+  pts.forEach((p,i)=>{ if(p.v===max) s += `<circle cx="${x(i)}" cy="${y(p.v)}" r="4" fill="${BLUE}" stroke="var(--panel)" stroke-width="2"/><text class="dlabel" x="${x(i)}" y="${y(p.v)-9}" text-anchor="middle">${fmt(p.v)}</text>`; });
+  const lblEvery = Math.ceil(pts.length/7);
+  pts.forEach((p,i)=>{ if(i%lblEvery===0||i===pts.length-1) s += `<text class="axis" x="${x(i)}" y="${H-7}" text-anchor="middle">${p.label.slice(5)}</text>`; });
+  s += `<line id="ch-cross" x1="0" x2="0" y1="${padT}" y2="${padT+ih}" stroke="rgba(238,241,246,.25)" stroke-width="1" opacity="0"/>`;
+  s += `<circle id="ch-dot" r="4" fill="${BLUE}" stroke="#0b0f14" stroke-width="2" opacity="0"/>`;
+  s += `<rect x="${padL}" y="${padT}" width="${iw}" height="${ih}" fill="transparent"/>`;
+  s += `</svg>`;
+  el.innerHTML = s;
+  const svg = el.querySelector("svg"), cross = el.querySelector("#ch-cross"), dot = el.querySelector("#ch-dot");
+  const hit = el.querySelector("rect[fill='transparent']");
+  hit.addEventListener("mousemove", e=>{
+    const box = svg.getBoundingClientRect();
+    const px = (e.clientX - box.left) * (W/box.width);
+    const i = Math.max(0, Math.min(pts.length-1, Math.round((px-padL)/iw*(pts.length-1))));
+    const p = pts[i];
+    cross.setAttribute("x1",x(i)); cross.setAttribute("x2",x(i)); cross.setAttribute("opacity",1);
+    dot.setAttribute("cx",x(i)); dot.setAttribute("cy",y(p.v)); dot.setAttribute("opacity",1);
+    showTip(`<span class="t">${p.label}</span><b>${fmt(p.v)}</b> leads captured${p.cash?`<br>${money(p.cash)} eventually collected from this day's leads`:""}`, e.clientX, e.clientY);
+  });
+  hit.addEventListener("mouseleave", ()=>{ cross.setAttribute("opacity",0); dot.setAttribute("opacity",0); hideTip(); });
+}
+
+/* ============ filters ============ */
+const state = { s:"All", g:"All", m:"All" };
+const SOURCES = ["All","Instagram","Facebook","Email","Untracked","Other"];
+const GRADES  = ["All","A","B","C","D"];
+const MEDIUMS = ["All","Reels","Feed","Stories","Video","Social","Untracked","Other"];
+
+function chips(elId, values, key){
+  const host = document.getElementById(elId);
+  values.forEach(v=>{
+    const b = document.createElement("button");
+    b.className = "chip" + (state[key]===v ? " on" : "");
+    b.textContent = v;
+    b.addEventListener("click", ()=>{ state[key]=v; syncChips(); render(); });
+    host.appendChild(b);
+  });
+}
+function syncChips(){
+  [["f-source",SOURCES,"s"],["f-grade",GRADES,"g"],["f-medium",MEDIUMS,"m"]].forEach(([id,vals,key])=>{
+    [...document.getElementById(id).querySelectorAll(".chip")].forEach((c,i)=>
+      c.classList.toggle("on", state[key]===vals[i]));
+  });
+}
+chips("f-source",SOURCES,"s"); chips("f-grade",GRADES,"g"); chips("f-medium",MEDIUMS,"m");
+document.getElementById("f-reset").addEventListener("click", ()=>{ state.s=state.g=state.m="All"; syncChips(); render(); });
+
+const filtered = () => ROWS.filter(r =>
+  (state.s==="All" || r.s===state.s) &&
+  (state.g==="All" || r.g===state.g) &&
+  (state.m==="All" || r.m===state.m));
+
+/* ============ render ============ */
+let sortKey = "cash", sortDir = -1, showAll = false;
+
+function render(){
+  const rows = filtered();
+  const sum = k => rows.reduce((a,r)=>a+(r[k]||0),0);
+  const leads = rows.length, crm = sum("crm"), booked = sum("bk"), closed = sum("cl"), cash = sum("cash");
+  const buyers = rows.filter(r=>r.cash>0).length;
+
+  /* KPIs */
+  const plans = rows.filter(r=>r.pay && /plan|deposit/i.test(r.pay)).length;
+  document.getElementById("kpis").innerHTML = [
+    ["Leads", fmt(leads), `${META.date_min.slice(5)} → ${META.date_max.slice(5)} · 2026`],
+    ["Booked calls", fmt(booked), `<b>${pct(booked,leads)}</b> of leads`],
+    ["Closed", fmt(closed), `<b>${pct(closed,booked)}</b> of booked calls`],
+    ["Cash collected", moneyK(cash), `${fmt(buyers)} paying (incl. deposits)`],
+    ["Avg per close", closed?moneyK(cash/closed):"–", plans?`${pct(plans,buyers||1)} on plans/deposits`:"—"],
+  ].map(([k,v,s])=>`<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
+
+  /* funnel */
+  funnel(document.getElementById("ch-funnel"), [
+    {label:"Leads captured", v:leads},
+    {label:"Pushed to CRM", v:crm},
+    {label:"Booked a call", v:booked},
+    {label:"Closed", v:closed},
+  ]);
+  document.getElementById("in-funnel").innerHTML =
+    `Overall <b>${pct(closed,leads)}</b> lead→close. The big cliff is CRM→booked (<b>${pct(booked,crm)}</b>) — that's a speed-to-lead and setter problem, not a traffic problem.`;
+
+  /* daily */
+  const byDay = {};
+  rows.forEach(r=>{ if(!r.d) return; byDay[r.d] = byDay[r.d]||{v:0,cash:0}; byDay[r.d].v++; byDay[r.d].cash+=r.cash; });
+  const days = Object.keys(byDay).sort().map(d=>({label:d, v:byDay[d].v, cash:byDay[d].cash}));
+  if(days.length) lineChart(document.getElementById("ch-daily"), days);
+  const peak = days.reduce((a,b)=>b.v>a.v?b:a, {v:0,label:"–"});
+  document.getElementById("in-daily").innerHTML =
+    `Peak day <b>${peak.label}</b> with <b>${fmt(peak.v)}</b> leads — capture concentrates hard around the webinar push; setters need surge capacity on exactly these days.`;
+
+  /* by source (two charts, one measure each — never a dual axis) */
+  const agg = (key, val) => {
+    const m = {};
+    rows.forEach(r=>{ const k=r[key]||"—"; m[k]=(m[k]||0)+(val?val(r):1); });
+    return Object.entries(m).map(([label,v])=>({label,v})).sort((a,b)=>b.v-a.v);
+  };
+  barsH(document.getElementById("ch-src-leads"), agg("s").slice(0,6), {color:BLUE});
+  barsH(document.getElementById("ch-src-cash"), agg("s", r=>r.cash).filter(i=>i.v>0).slice(0,6), {color:AQUA, vfmt:moneyK});
+  barsH(document.getElementById("ch-medium"), agg("m").filter(i=>i.label!=="Untracked").slice(0,6), {color:BLUE});
+  if(state.s==="All" && state.g==="All" && state.m==="All"){
+    document.getElementById("in-source").innerHTML =
+      `<b>Instagram is the engine</b> (3,156 leads, ~$104K) while <b>Facebook under-monetizes badly</b> (1,229 leads → $6.8K). ` +
+      `<b>Email is the quiet killer:</b> 415 leads → $50.8K, and its booked calls close at roughly <b>4× the paid-social rate</b>. ` +
+      `"Untracked" (~$63K) is mostly organic/DM traffic — fixing UTM discipline is free money for attribution.`;
+  } else {
+    const srcCash = agg("s", r=>r.cash);
+    document.getElementById("in-source").innerHTML =
+      `Filtered view: <b>${fmt(leads)}</b> leads → <b>${money(cash)}</b>. Top source in view: <b>${srcCash[0]?esc(srcCash[0].label):"—"}</b> (${srcCash[0]?moneyK(srcCash[0].v):"–"}).`;
+  }
+
+  /* leaderboard */
+  const cm = {};
+  rows.forEach(r=>{
+    const k = r.c || "(untracked)";
+    cm[k] = cm[k] || {c:k, leads:0, bk:0, cl:0, cash:0};
+    cm[k].leads++; cm[k].bk+=r.bk; cm[k].cl+=r.cl; cm[k].cash+=r.cash;
+  });
+  let camps = Object.values(cm).map(x=>({...x, cpl: x.leads?x.cash/x.leads:0}));
+  camps.sort((a,b)=> (b[sortKey]-a[sortKey])*(-sortDir));
+  const maxCash = Math.max(...camps.map(c=>c.cash),1);
+  const view = showAll ? camps : camps.slice(0,12);
+  const cols = [["c","Campaign / creative"],["leads","Leads"],["bk","Booked"],["cl","Closed"],["cash","Cash"],["cpl","$ / lead"]];
+  document.getElementById("board").innerHTML =
+    `<thead><tr>${cols.map(([k,l])=>`<th data-k="${k}" class="${sortKey===k?"on":""}">${l} <span class="dir">${sortKey===k?(sortDir<0?"▼":"▲"):""}</span></th>`).join("")}</tr></thead>` +
+    `<tbody>${view.map(x=>`<tr>
+      <td title="${esc(x.c)}">${esc(x.c)}</td>
+      <td>${fmt(x.leads)}</td><td>${fmt(x.bk)}</td><td>${fmt(x.cl)}</td>
+      <td><span class="bar" style="width:${Math.max(2,x.cash/maxCash*70)}px"></span>${money(x.cash)}</td>
+      <td>${x.cash? "$"+x.cpl.toFixed(0) : "–"}</td>
+    </tr>`).join("")}</tbody>`;
+  document.getElementById("board").querySelectorAll("th").forEach(th=>{
+    th.addEventListener("click", ()=>{
+      const k = th.dataset.k;
+      if(k==="c") return;
+      if(sortKey===k) sortDir*=-1; else { sortKey=k; sortDir=-1; }
+      render();
+    });
+  });
+  document.getElementById("board-more").textContent = showAll ? "Show top 12 ↑" : `Show all ${camps.length} campaigns ↓`;
+
+  /* grades */
+  const gOrder = ["A","B","C","D"];
+  const gm = gOrder.map(g=>{
+    const rs = rows.filter(r=>r.g===g);
+    return {g, n:rs.length, cl:rs.reduce((a,r)=>a+r.cl,0), cash:rs.reduce((a,r)=>a+r.cash,0)};
+  });
+  barsH(document.getElementById("ch-grades"), gm.map(x=>({label:`Grade ${x.g}`, v:x.n})), {color:BLUE,
+    tip: it => { const x = gm.find(y=>`Grade ${y.g}`===it.label);
+      return `<span class="t">${it.label}</span><b>${fmt(x.n)}</b> leads<br>${fmt(x.cl)} closed (${pct(x.cl,x.n)})<br>${money(x.cash)} collected`; }});
+  barsH(document.getElementById("ch-grade-cash"), gm.map(x=>({label:`Grade ${x.g}`, v:x.cash})), {color:AQUA, vfmt:moneyK,
+    tip: it => { const x = gm.find(y=>`Grade ${y.g}`===it.label);
+      return `<span class="t">${it.label}</span><b>${money(x.cash)}</b> collected<br>close rate ${pct(x.cl,x.n)}`; }});
+  const B = gm[1], C = gm[2], D = gm[3];
+  document.getElementById("in-grade").innerHTML = (D.cash > C.cash)
+    ? `<b>The score is miscalibrated:</b> D-grades collected <b>${money(D.cash)}</b> vs C-grades' ${money(C.cash)} — the model under-ranks real buyers. Retrain on revenue, not form completeness.`
+    : `In this filtered view grades rank as designed (B ${moneyK(B.cash)} · C ${moneyK(C.cash)} · D ${moneyK(D.cash)}).`;
+
+  /* capital */
+  const CAP_ORDER = ["i have 0 savings","Under $1K / £750","$1K–$3K / £750-2,250","$3K–$5K / £2,250 - 3,750","$5K–$10K / £3,750 - 7,500","Over $10K / £7,500","I'd need to figure it out"];
+  const CAP_SHORT = {"i have 0 savings":"$0 savings","Under $1K / £750":"Under $1K","$1K–$3K / £750-2,250":"$1K–$3K","$3K–$5K / £2,250 - 3,750":"$3K–$5K","$5K–$10K / £3,750 - 7,500":"$5K–$10K","Over $10K / £7,500":"Over $10K","I'd need to figure it out":"Would figure it out"};
+  const capm = CAP_ORDER.map(c=>{
+    const rs = rows.filter(r=>r.cap===c);
+    return {label:CAP_SHORT[c], n:rs.length, v:rs.reduce((a,r)=>a+r.cl,0), cash:rs.reduce((a,r)=>a+r.cash,0)};
+  }).filter(x=>x.n>0);
+  barsH(document.getElementById("ch-capital"), capm, {color:VIOLET,
+    tip: it => { const x = capm.find(y=>y.label===it.label);
+      return `<span class="t">${esc(it.label)}</span><b>${fmt(x.v)}</b> closes from ${fmt(x.n)} leads (${pct(x.v,x.n)})<br>${money(x.cash)} collected`; }});
+  const best = [...capm].sort((a,b)=>b.cash-a.cash)[0];
+  document.getElementById("in-capital").innerHTML = best
+    ? `<b>${esc(best.label)}</b> is the money bracket in this view: ${fmt(best.v)} closes, ${money(best.cash)} collected. Route these to your best closers first.` : "";
+
+  /* audience */
+  const survey = rows.filter(r=>r.fr).length;
+  document.getElementById("survey-n").textContent =
+    `From the pre-webinar survey — ${fmt(survey)} of ${fmt(leads)} leads in view answered (${pct(survey,leads)}).`;
+  const dist = (key, order) => {
+    const m = {};
+    rows.forEach(r=>{ if(r[key]) m[r[key]]=(m[r[key]]||0)+1; });
+    let items = Object.entries(m).map(([label,v])=>({label,v}));
+    if(order) items.sort((a,b)=>order.indexOf(a.label)-order.indexOf(b.label));
+    else items.sort((a,b)=>b.v-a.v);
+    return items.slice(0,7);
+  };
+  barsH(document.getElementById("ch-income"), dist("inc"), {color:AMBER});
+  barsH(document.getElementById("ch-frust"), dist("fr"), {color:BLUE});
+  barsH(document.getElementById("ch-day"), dist("day"), {color:BLUE});
+  barsH(document.getElementById("ch-follow"), dist("fol",
+    ["Less than 1 month","1–3 months","3–6 months","6–12 months","Over a year","I don't follow him"]), {color:AMBER});
+
+  /* header stats */
+  document.getElementById("m-leads-h").textContent = fmt(META.checksum.leads);
+  document.getElementById("m-cash-h").textContent = moneyK(META.checksum.cash);
+  document.getElementById("m-range").textContent =
+    new Date(META.date_min).toLocaleDateString("en-US",{month:"short",day:"numeric"}) + " – " +
+    new Date(META.date_max).toLocaleDateString("en-US",{month:"short",day:"numeric"});
+}
+
+document.getElementById("board-more").addEventListener("click", ()=>{ showAll=!showAll; render(); });
+addEventListener("resize", (()=>{ let t; return ()=>{ clearTimeout(t); t=setTimeout(render,150); }; })());
+
+render();
+})();
+</script>
+
+<!-- metric-rationale tour -->
+<script>
+window.TOUR_STEPS = [
+  {sel:".kpis", title:"Five numbers, ranked by decision-power", body:"Leads is the vanity metric; it's here for scale. The pairs that drive decisions are booked-rate (marketing quality) and close-rate (sales quality) — splitting them tells you WHICH team has the problem. Cash collected is the only number the business banks."},
+  {sel:"#c-funnel", title:"The funnel names the bottleneck", body:"Each stage shows conversion from the previous one, so the cliff is visible instead of averaged away. Here the leak is CRM→booked — a speed-to-lead and setter-capacity issue, which no amount of new ad spend fixes."},
+  {sel:"#ch-src-leads", title:"Two charts, deliberately not one", body:"Leads and cash never share an axis here — dual-axis charts let whoever picks the scales pick the story. Side by side, the mismatch IS the story: Facebook's volume doesn't cash, email's tiny volume does."},
+  {sel:"#c-board", title:"Creatives ranked by revenue, not clicks", body:"UTM names are cleaned ('– Copy' duplicates merged) and every campaign gets $-per-lead so small-but-rich creatives surface. This is the table a media buyer should open every morning."},
+  {sel:"#ch-grade-cash", title:"The scoring model on trial", body:"A lead score only earns trust if it predicts money. Cash-by-grade shows D-grades out-collecting C-grades — the model inverts the middle of the list, so call priority is being misallocated. This chart exists to make that impossible to ignore."},
+  {sel:"#ch-capital", title:"Qualification data the closers should see", body:"Self-reported capital maps almost perfectly onto closes. The $1K–$3K bracket is the sweet spot; the huge $0-savings segment converts thin. That's routing logic, not just a chart."},
+  {sel:"#ch-frust", title:"Audience truth for the copy team", body:"The survey distributions aren't decoration — 'can't give my family the life they deserve' leading the frustration chart is next month's ad angle, said in the audience's own words."},
+  {sel:".cards3", title:"Insights are only worth their actions", body:"Every finding above resolves into a move: retrain the score on revenue, treat email as the closer, audit Facebook creative, chase deposit→PIF conversion, dedupe at capture. A dashboard that doesn't end in verbs is a screensaver."},
+  {sel:"#selftest", title:"Trust, verified", body:"The page recomputes the pipeline's checksums from raw rows on every load — if the data and the charts ever disagree, it says so in the footer. And no PII ever reaches this public page: names, emails and phones are stripped at the pipeline."}
+];
+</script>
+<script src="../landing-page/shared/tour.js"></script>
+</body>
+</html>
