@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  The Halal Money Masterclass — registration page (variant: "Premium")
+  Rebuilt from scratch — no page builder, no template.
+  Design language: private-bank dark — emerald, gold, serif display.
+  Sections: announce → hero (+founder photo) → stats → agenda → transformation
+            → founder story (3 chapters, real photos) → student wins (real videos)
+            → proof wall → Trustpilot → FAQ → final CTA → footer → modal
+  Form redirects to the live funnel's confirmation step, carrying
+  funnelVersion=v2-premium so variants can be split-tested downstream.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Halal Money Masterclass — Abu Lahya</title>
+<meta name="description" content="Free 90-minute training. The remote email skill that took Abu Lahya from a €11/hour waiter to $10K/month — 100% halal. No face, no audience, no products.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="How To Make Money So Fast It Feels Haram">
+<meta property="og:description" content="Free 90-min masterclass. 100% halal. No face, no audience, no products. Just email.">
+<meta property="og:site_name" content="The Halal Money Masterclass">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060d0a">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23060d0a'/%3E%3Cpath d='M16 4l3.1 6.3 7 1-5 4.9 1.2 6.9L16 19.8l-6.3 3.3L11 16.2 6 11.3l7-1z' fill='%23d9b45b'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="../assets/abu-founder.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/tour.css">
+
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --bg:#060d0a; --bg-2:#0a130e; --panel:#0d1a13; --panel-2:#101f17;
+  --ink:#f2eee3; --muted:#a7b3a8; --faint:#6f7d72;
+  --gold:#d9b45b; --gold-2:#e9cb7b; --emerald:#2fbf83;
+  --line:rgba(217,180,91,.16); --line-soft:rgba(242,238,227,.08);
+  --radius:16px;
+  --font-d:"Fraunces",Georgia,serif; --font-b:"Inter",-apple-system,"Segoe UI",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg,video{display:block;max-width:100%}
+a{color:inherit}
+.wrap{width:min(1120px,100% - 40px);margin-inline:auto}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.section{padding:clamp(64px,9vw,110px) 0}
+h2{font-family:var(--font-d);font-weight:600;font-size:clamp(30px,4.4vw,46px);line-height:1.12;letter-spacing:-.01em;margin:14px 0 18px}
+.sub{color:var(--muted);max-width:58ch}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+
+.pattern{position:relative}
+.pattern::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23d9b45b' stroke-width='1'%3E%3Cpath d='M48 8l11 29 29 11-29 11-11 29-11-29-29-11 29-11z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- announce / header ---------- */
+.announce{background:linear-gradient(90deg,#123423,#0d2a1b 50%,#123423);border-bottom:1px solid var(--line);text-align:center;padding:9px 16px;font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-2)}
+.announce b{color:var(--ink);font-weight:800}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.wordmark{font-family:var(--font-d);font-weight:700;font-size:19px;letter-spacing:.02em;display:flex;align-items:center;gap:10px;text-decoration:none}
+.wordmark svg{width:26px;height:26px}
+.top .mini-cta{font-size:14px;font-weight:700;text-decoration:none;color:var(--bg);background:var(--gold);padding:9px 18px;border-radius:999px;transition:transform .15s ease,box-shadow .15s ease}
+.top .mini-cta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(217,180,91,.35)}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(36px,6vw,72px) 0 clamp(56px,7vw,84px);position:relative}
+.hero::after{content:"";position:absolute;top:-12%;left:30%;width:min(680px,80vw);height:420px;pointer-events:none;background:radial-gradient(closest-side,rgba(217,180,91,.13),transparent 70%)}
+.hero .cols{display:grid;grid-template-columns:1.25fr .9fr;gap:clamp(28px,5vw,64px);align-items:center}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;background:rgba(217,180,91,.07);padding:7px 16px;font-size:13px;font-weight:600;color:var(--gold-2)}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 4px rgba(47,191,131,.15)}
+h1{font-family:var(--font-d);font-weight:640;font-size:clamp(36px,5.4vw,64px);line-height:1.05;letter-spacing:-.015em;margin:22px 0 18px;position:relative;z-index:1}
+h1 .flame{font-style:italic;font-weight:700;background:linear-gradient(100deg,var(--gold-2),var(--gold) 60%,#b78c33);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.hero .lede{color:var(--muted);max-width:54ch;margin:0 0 28px;font-size:clamp(16px,1.9vw,18.5px)}
+.hero .lede strong{color:var(--ink);font-weight:700}
+.hero .lede .halal{color:var(--emerald);font-weight:700}
+
+.count{display:flex;gap:clamp(8px,1.4vw,14px);margin:0 0 28px}
+.count .lbl{align-self:center;margin-right:6px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.cell{min-width:clamp(60px,7.5vw,82px);background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:11px 8px 9px;text-align:center}
+.cell b{display:block;font-family:var(--font-d);font-weight:600;font-size:clamp(24px,3.6vw,36px);line-height:1;color:var(--gold-2);font-variant-numeric:tabular-nums}
+.cell span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:700}
+
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-b);font-weight:800;font-size:clamp(16px,2vw,19px);color:#0d1a0f;text-decoration:none;cursor:pointer;border:0;background:linear-gradient(180deg,var(--gold-2),var(--gold));padding:19px 40px;border-radius:999px;box-shadow:0 10px 40px rgba(217,180,91,.35),inset 0 1px 0 rgba(255,255,255,.4);transition:transform .15s ease,box-shadow .15s ease}
+.cta:hover{transform:translateY(-2px);box-shadow:0 16px 52px rgba(217,180,91,.45),inset 0 1px 0 rgba(255,255,255,.4)}
+.cta:active{transform:translateY(0)}
+.cta .arrow{transition:transform .15s ease}
+.cta:hover .arrow{transform:translateX(4px)}
+.hero .meta{margin-top:14px;font-size:14.5px;color:var(--muted);font-weight:600}
+.hero .meta b{color:var(--ink)}
+
+.social{display:flex;align-items:center;gap:14px;margin-top:22px}
+.avatars{display:flex}
+.avatars .av{width:38px;height:38px;border-radius:50%;border:2px solid var(--bg);margin-left:-10px;display:grid;place-items:center;font-size:13px;font-weight:800;color:#0d1a0f}
+.avatars .av:first-child{margin-left:0}
+.social p{font-size:14px;color:var(--muted)}
+.social p b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+.hero-photo{position:relative}
+.hero-photo .frame{border-radius:22px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.hero-photo img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.chip{position:absolute;background:rgba(9,18,13,.92);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 16px;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.chip b{display:block;font-family:var(--font-d);font-size:20px;color:var(--gold-2);line-height:1.15}
+.chip span{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.chip.c1{top:16px;right:-14px}
+.chip.c2{bottom:26px;left:-18px}
+
+/* ---------- stats ---------- */
+.stats{border-block:1px solid var(--line-soft);background:var(--bg-2)}
+.stats .row{display:grid;grid-template-columns:repeat(4,1fr);padding:26px 0}
+.stat{text-align:center;padding:6px 8px}
+.stat b{display:block;font-family:var(--font-d);font-weight:600;font-size:clamp(22px,3.2vw,32px);color:var(--gold-2);line-height:1.15;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.stat + .stat{border-left:1px solid var(--line-soft)}
+
+/* ---------- agenda ---------- */
+.agenda{background:var(--bg-2);border-block:1px solid var(--line-soft)}
+.agenda .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:42px}
+.acard{border:1px solid var(--line-soft);border-radius:var(--radius);background:var(--panel);padding:28px;transition:border-color .2s ease,transform .2s ease}
+.acard:hover{border-color:var(--line);transform:translateY(-3px)}
+.acard .num{font-family:var(--font-d);font-style:italic;font-weight:600;font-size:15px;color:var(--gold);letter-spacing:.06em}
+.acard h3{font-size:20px;font-weight:800;margin:10px 0 8px;letter-spacing:-.01em}
+.acard p{color:var(--muted);font-size:15.5px}
+
+/* ---------- transformation ---------- */
+.transform .cards{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(14px,2.5vw,26px);align-items:stretch;margin-top:42px}
+.tcard{border:1px solid var(--line-soft);border-radius:var(--radius);background:linear-gradient(180deg,var(--panel),var(--bg-2));padding:30px 28px}
+.tcard.after{border-color:var(--line);background:linear-gradient(180deg,#12241a,var(--panel))}
+.tcard .tag{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+.tcard.after .tag{color:var(--emerald)}
+.tcard .big{font-family:var(--font-d);font-weight:600;font-size:clamp(34px,5vw,52px);line-height:1.05;margin:12px 0 8px}
+.tcard.before .big{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(217,180,91,.5);text-decoration-thickness:3px}
+.tcard.after .big{color:var(--gold-2)}
+.tcard p{color:var(--muted);font-size:15.5px}
+.t-arrow{align-self:center;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--gold)}
+.t-arrow svg{width:22px;height:22px}
+
+/* ---------- founder story ---------- */
+.founder .chapter{display:grid;grid-template-columns:340px 1fr;gap:clamp(26px,5vw,64px);align-items:center;margin-top:52px}
+.founder .chapter.flip{grid-template-columns:1fr 340px}
+.founder .chapter.flip .photo{order:2}
+.founder .photo{border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.founder .photo img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.founder h3{font-family:var(--font-d);font-weight:600;font-size:clamp(23px,2.8vw,30px);letter-spacing:-.01em;margin-bottom:14px}
+.founder h3 em{font-style:italic;color:var(--gold-2)}
+.founder p{color:var(--muted);margin-bottom:12px;font-size:16px}
+.founder p b{color:var(--ink)}
+.founder blockquote{font-family:var(--font-d);font-style:italic;font-weight:500;font-size:clamp(18px,2.2vw,22px);line-height:1.5;color:var(--ink);border-left:3px solid var(--gold);padding-left:20px;margin:18px 0 6px}
+
+/* ---------- student wins (videos) ---------- */
+.wins{background:var(--bg-2);border-block:1px solid var(--line-soft)}
+.wins .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}
+.wcard{border:1px solid var(--line-soft);border-radius:var(--radius);background:var(--panel);overflow:hidden}
+.wcard video{width:100%;aspect-ratio:9/16;object-fit:cover;background:#000;cursor:pointer}
+.wcard .cap{padding:18px 20px}
+.wcard .cap b{display:block;font-size:16px}
+.wcard .cap .amount{font-family:var(--font-d);font-size:20px;color:var(--gold-2);margin:2px 0 8px}
+.wcard .cap p{font-size:14px;color:var(--muted);line-height:1.55}
+
+/* ---------- proof wall ---------- */
+.wall{padding:clamp(56px,7vw,84px) 0;overflow:hidden}
+.wall .head{text-align:center;margin-bottom:38px}
+.marquee{display:flex;gap:16px;width:max-content;animation:scroll 60s linear infinite}
+.marquee:hover{animation-play-state:paused}
+.marquee + .marquee{margin-top:16px;animation-duration:75s;animation-direction:reverse}
+.marquee img{width:366px;height:96px;max-width:none;object-fit:cover;object-position:left top;border-radius:12px;border:1px solid var(--line-soft);background:#fff}
+@keyframes scroll{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee{flex-wrap:wrap;width:auto;animation:none}}
+
+/* ---------- trustpilot ---------- */
+.trust{background:var(--bg-2);border-block:1px solid var(--line-soft)}
+.trust .head{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center}
+.trust .head img{height:30px;width:auto}
+.trust .head .lbl{font-weight:800;font-size:19px}
+.trust .head .n{color:var(--muted);font-size:14.5px}
+.trust .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.rcard{border:1px solid var(--line-soft);border-radius:var(--radius);background:var(--panel);padding:24px}
+.rcard .who{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.rcard .who .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:12px;color:#0d1a0f;background:var(--gold)}
+.rcard .who b{font-size:14.5px;display:block;line-height:1.2}
+.rcard .who span{font-size:12px;color:var(--emerald);font-weight:700}
+.rcard h4{font-size:15.5px;margin-bottom:6px}
+.rcard p{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* ---------- FAQ ---------- */
+.faq .list{margin-top:38px;border-top:1px solid var(--line-soft)}
+.faq details{border-bottom:1px solid var(--line-soft)}
+.faq summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 4px;font-size:clamp(16px,2vw,18.5px);font-weight:700}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .plus{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);color:var(--gold);display:grid;place-items:center;font-weight:600;font-size:18px;transition:transform .2s ease}
+.faq details[open] summary .plus{transform:rotate(45deg)}
+.faq .a{padding:0 4px 24px;color:var(--muted);max-width:70ch}
+.faq .a b{color:var(--ink)}
+
+/* ---------- final ---------- */
+.final{text-align:center;position:relative}
+.final h2{max-width:24ch;margin-inline:auto}
+.final .count{justify-content:center;margin:34px 0}
+.final .urgency{margin-top:18px;font-size:14.5px;color:var(--muted)}
+.final .urgency b{color:var(--gold-2)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line-soft);background:var(--bg-2);padding:40px 0 52px}
+footer .cols{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;flex-wrap:wrap}
+footer .disclaimer{font-size:12.5px;color:var(--faint);max-width:72ch;line-height:1.7;margin-top:18px}
+footer .fine{font-size:12.5px;color:var(--faint)}
+
+/* ---------- sticky CTA ---------- */
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;align-items:center;justify-content:space-between;gap:14px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(6,13,10,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s ease}
+.sticky-cta.show{transform:translateY(0)}
+.sticky-cta .t{font-size:12.5px;color:var(--muted);line-height:1.35}
+.sticky-cta .t b{color:var(--gold-2);font-variant-numeric:tabular-nums}
+.sticky-cta .cta{padding:13px 22px;font-size:15px;flex:none}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(3,7,5,.78);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .2s ease}
+.overlay.open{opacity:1;pointer-events:auto}
+.modal{width:min(480px,100%);max-height:calc(100vh - 40px);overflow:auto;background:linear-gradient(180deg,#12241a,var(--panel));border:1px solid var(--line);border-radius:22px;padding:34px 30px 30px;position:relative;transform:translateY(14px) scale(.98);transition:transform .2s ease}
+.overlay.open .modal{transform:none}
+.modal .close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line-soft);background:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+.modal .close:hover{color:var(--ink);border-color:var(--line)}
+.modal .badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.modal .badges span{font-size:12px;font-weight:700;color:var(--gold-2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:rgba(217,180,91,.06)}
+.modal h3{font-family:var(--font-d);font-weight:600;font-size:28px;text-align:center;letter-spacing:-.01em}
+.modal .note{font-size:14px;color:var(--muted);text-align:center;margin:10px 0 22px}
+.modal .note b{color:var(--gold-2)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;padding:14px 16px;font-size:16px;color:var(--ink);background:rgba(6,13,10,.6);border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-b);transition:border-color .15s ease}
+.field input:focus{outline:none;border-color:var(--gold)}
+.field input.err{border-color:#e0685f}
+.field .fielderr{display:none;font-size:12.5px;color:#e0885f;margin-top:5px}
+.field.show-err .fielderr{display:block}
+.modal .cta{width:100%;margin-top:8px}
+.modal .cta[disabled]{opacity:.7;cursor:wait}
+.modal .tiny{margin-top:14px;font-size:12px;color:var(--faint);text-align:center}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:960px){
+  .hero .cols{grid-template-columns:1fr}
+  .hero-photo{max-width:420px;margin-inline:auto}
+  .chip.c1{right:6px}.chip.c2{left:6px}
+  .founder .chapter,.founder .chapter.flip{grid-template-columns:1fr}
+  .founder .chapter.flip .photo{order:0}
+  .founder .photo{max-width:380px;margin-inline:auto}
+  .wins .grid,.trust .grid{grid-template-columns:1fr}
+  .agenda .grid{grid-template-columns:1fr}
+  .transform .cards{grid-template-columns:1fr}
+  .t-arrow{transform:rotate(90deg);justify-self:center}
+  .stats .row{grid-template-columns:1fr 1fr;row-gap:18px}
+  .stat:nth-child(3){border-left:none}
+  .sticky-cta{display:flex}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .count .lbl{display:none}
+  .top .mini-cta{display:none}
+  .announce{font-size:10.5px;letter-spacing:.14em}
+}
+</style>
+</head>
+<body>
+
+<div class="announce">Free Masterclass · <b data-date-short>Wednesday</b> · Save Your Seat</div>
+
+<header class="top wrap">
+  <a class="wordmark" href="#" aria-label="Abu Lahya — home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2l3.4 7 7.6 1.1-5.5 5.4 1.3 7.6L16 19.5l-6.8 3.6 1.3-7.6L5 10.1 12.6 9z" fill="#d9b45b"/></svg>
+    ABU LAHYA
+  </a>
+  <a class="mini-cta" href="#register" data-open-modal>Save my seat</a>
+</header>
+
+<main>
+<!-- hero -->
+<section class="hero pattern wrap" id="s-hero">
+  <div class="cols">
+    <div>
+      <span class="badge" id="s-badge"><span class="dot" aria-hidden="true"></span>Free Training · No Cost</span>
+      <h1 id="s-headline"><span class="l1">How To Make Money So&nbsp;Fast</span> <span class="flame">It Feels Haram</span></h1>
+      <p class="lede">
+        <span class="halal">100% halal.</span> No face, no audience, no products. Just email.
+        The remote skill that took me from a <strong>€11/hour waiter</strong> to
+        <strong>$10K/month</strong> — and 2,000+ brothers are now doing the same.
+      </p>
+      <div class="count" id="s-count" role="timer" aria-label="Time until the masterclass starts">
+        <span class="lbl">Starts in</span>
+        <div class="cell"><b data-t="d">00</b><span>days</span></div>
+        <div class="cell"><b data-t="h">00</b><span>hrs</span></div>
+        <div class="cell"><b data-t="m">00</b><span>min</span></div>
+        <div class="cell"><b data-t="s">00</b><span>sec</span></div>
+      </div>
+      <button class="cta" id="s-cta" data-open-modal>Yes, save my free seat <span class="arrow">→</span></button>
+      <p class="meta"><b data-date-long>Wednesday</b> · 2PM EST / 7PM UK · 90 min training</p>
+      <div class="social" id="s-social">
+        <div class="avatars" aria-hidden="true">
+          <span class="av" style="background:#d9b45b">YA</span>
+          <span class="av" style="background:#2fbf83">MK</span>
+          <span class="av" style="background:#e9cb7b">IB</span>
+          <span class="av" style="background:#68c9a0">SR</span>
+          <span class="av" style="background:#c8a04b">AH</span>
+        </div>
+        <p><b data-counter="1847">1,847</b> brothers already registered</p>
+      </div>
+    </div>
+    <div class="hero-photo" id="s-photo">
+      <div class="frame"><img src="../assets/abu-founder.jpg" alt="Abu Lahya, founder of IMA" width="960" height="1200"></div>
+      <div class="chip c1"><b>$10M+</b><span>Student revenue</span></div>
+      <div class="chip c2"><b>2,000+</b><span>Brothers taught</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- stats -->
+<section class="stats" id="s-stats">
+  <div class="wrap row">
+    <div class="stat reveal"><b>2,000+</b><span>Brothers helped</span></div>
+    <div class="stat reveal"><b>92%</b><span>Success rate</span></div>
+    <div class="stat reveal"><b>$10M+</b><span>Student revenue</span></div>
+    <div class="stat reveal"><b>55</b><span>Team, 7 countries</span></div>
+  </div>
+</section>
+
+<!-- agenda -->
+<section class="section agenda" id="s-agenda">
+  <div class="wrap">
+    <p class="eyebrow reveal">Free · On Zoom · 90 minutes</p>
+    <h2 class="reveal">What you'll walk away with</h2>
+    <p class="sub reveal">No fluff, no pitch-fest. Ninety minutes, four things, all of them actionable.</p>
+    <div class="grid">
+      <article class="acard reveal">
+        <span class="num">01</span>
+        <h3>The Email Skill</h3>
+        <p>The exact halal model: connect brands with influencers, structure the deals, and take a cut — all over email. No inventory, no audience, no haram.</p>
+      </article>
+      <article class="acard reveal">
+        <span class="num">02</span>
+        <h3>Why nobody sees it coming</h3>
+        <p>No face, no content treadmill, no personal brand. How 2,000+ brothers work quietly behind other people's brands — and get paid like specialists.</p>
+      </article>
+      <article class="acard reveal">
+        <span class="num">03</span>
+        <h3>The €11/hr → $10K/mo roadmap</h3>
+        <p>The 90-day path from waiting tables to five figures a month — what to learn, in what order, and the mistakes that cost me six extra months.</p>
+      </article>
+      <article class="acard reveal">
+        <span class="num">04</span>
+        <h3>The Halal Filter</h3>
+        <p>How every dollar stays clean: no riba, no gambling, no grey areas. The exact test I run before touching any client, brand or offer.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- transformation -->
+<section class="section transform wrap" id="s-transform">
+  <p class="eyebrow reveal">The transformation</p>
+  <h2 class="reveal">Same brother. Ninety days apart.</h2>
+  <div class="cards">
+    <article class="tcard before reveal">
+      <span class="tag">Before</span>
+      <p class="big">€11/hr</p>
+      <p>Waiter, stuck. Three jobs to make ends meet — restaurant shifts, weekend bakery, code on the side.</p>
+    </article>
+    <div class="t-arrow reveal" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </div>
+    <article class="tcard after reveal">
+      <span class="tag">3 months later</span>
+      <p class="big">$10K/mo</p>
+      <p>Free &amp; halal. One laptop, a handful of deals, and an inbox that pays.</p>
+    </article>
+  </div>
+</section>
+
+<!-- founder story -->
+<section class="section founder wrap" id="s-founder">
+  <p class="eyebrow reveal">Meet the founder</p>
+  <h2 class="reveal">The brother behind the halal online movement</h2>
+  <p class="sub reveal">From €11/hour waiter in France to teaching 2,000+ Muslim brothers the halal way to make money online.</p>
+
+  <div class="chapter reveal">
+    <div class="photo"><img src="../assets/abu-early-days.jpg" alt="Abu Lahya during his 9-5 years" loading="lazy"></div>
+    <div>
+      <h3>The years of <em>refusing to compromise</em></h3>
+      <p>Three years ago, Abu Lahya was working <b>three jobs</b> to make ends meet. Waiter at €11 an hour. Bakery shifts on weekends. Software engineering on the side.</p>
+      <p>Every online business model came with a catch. He started dropshipping — walked away when the products didn't align with his deen. He moved to crypto, actually made money, then <b>deleted the wallet and threw away the Ledger USB with his earnings on it</b>, because he refused to let his rizq come through haram.</p>
+      <p>Six months longer than everyone else. No shortcuts. SubhanAllah — sticking with halal would later give his business a baraka the others never had.</p>
+    </div>
+  </div>
+
+  <div class="chapter flip reveal">
+    <div class="photo"><img src="../assets/abu-journey.jpg" alt="Abu Lahya" loading="lazy"></div>
+    <div>
+      <h3>From one brother to a <em>brotherhood of 2,000+</em></h3>
+      <p>Then he found it: a halal model where he could help <b>brands partner with influencers</b>, structure the deals, and take a cut — over email. No inventory, no audience, no haram.</p>
+      <p>He scaled from waiter wages to <b>$30,000 a month</b> from his laptop, alhamdulillah — and immediately started teaching other brothers so they wouldn't waste years bouncing between haram options like he did.</p>
+      <p>A free community of 17 brothers became a YouTube channel, a full mentorship program, and an education company with a <b>team of 55 across 7 countries</b>. Brothers who've quit their 9-5, made hijrah, and rebuilt their families on halal income.</p>
+      <blockquote>“Staying on your deen and building wealth are not opposites. They go together.”</blockquote>
+    </div>
+  </div>
+
+  <div class="chapter reveal">
+    <div class="photo"><img src="../assets/abu-founder.jpg" alt="Abu Lahya today" loading="lazy"></div>
+    <div>
+      <h3>Endorsed. Proven. <em>Alhamdulillah.</em></h3>
+      <p>Today Abu Lahya has helped over <b>2,000 Muslims</b> launch halal businesses online — a <b>92% success rate</b> and <b>$10M+ in combined student revenue</b>.</p>
+      <p>He's been endorsed by <b>Sheikh Uthman, Sheikh Imran Ibn Mansour, and Abu Bakr The Musafir</b>. He flew the team to Madinah to teach 50 brothers for free, took the whole company to Makkah for Umrah, and spent <b>$250,000 out of his own pocket</b> to ship 10,000 business books to Muslims around the world.</p>
+      <p>On this free masterclass, he breaks the whole model down — live, nothing held back.</p>
+    </div>
+  </div>
+</section>
+
+<!-- student wins: videos -->
+<section class="section wins" id="s-wins">
+  <div class="wrap">
+    <p class="eyebrow reveal">Real student wins</p>
+    <h2 class="reveal">Brothers who showed up</h2>
+    <p class="sub reveal">A few of the 2,000+ Muslim brothers who've gone through IMA. Allahumma barik.</p>
+    <div class="grid">
+      <article class="wcard reveal">
+        <video src="../assets/videos/michael.mp4" preload="metadata" controls playsinline></video>
+        <div class="cap">
+          <b>Michael</b>
+          <p class="amount">$40K in 6 weeks</p>
+          <p>“Never had an online business, a sales job, or any marketing knowledge. Results exceeded every expectation.”</p>
+        </div>
+      </article>
+      <article class="wcard reveal">
+        <video src="../assets/videos/imam-baba.mp4" preload="metadata" controls playsinline></video>
+        <div class="cap">
+          <b>Imam Baba</b>
+          <p class="amount">$35K in deals in 2.5 months</p>
+          <p>“The course teaches everything A to Z. There is nothing that can go wrong if you put in the effort.”</p>
+        </div>
+      </article>
+      <article class="wcard reveal">
+        <video src="../assets/videos/farhad.mp4" preload="metadata" controls playsinline></video>
+        <div class="cap">
+          <b>Farhad</b>
+          <p class="amount">$10K/month profit</p>
+          <p>“Started as a lost university student. Now pulling $10K/month in profit and I retired my mother, alhamdulillah.”</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- proof wall -->
+<section class="wall" id="s-wall">
+  <div class="head wrap">
+    <p class="eyebrow reveal">Straight from the community</p>
+    <h2 class="reveal">The wins don't stop posting</h2>
+  </div>
+  <div class="marquee" data-marquee>
+    <img src="../assets/wins/win-01.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-02.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-03.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-04.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-05.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-06.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-07.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-08.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-09.png" alt="Student win screenshot" loading="lazy">
+  </div>
+  <div class="marquee" data-marquee>
+    <img src="../assets/wins/win-10.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-11.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-12.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-13.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-14.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-15.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-16.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-17.png" alt="Student win screenshot" loading="lazy">
+    <img src="../assets/wins/win-18.png" alt="Student win screenshot" loading="lazy">
+  </div>
+</section>
+
+<!-- trustpilot -->
+<section class="section trust" id="s-trust">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="lbl">Excellent</span>
+      <img src="../assets/stars-5.png" alt="Five star rating">
+      <span class="n">235+ reviews on Trustpilot</span>
+    </div>
+    <div class="grid">
+      <article class="rcard reveal">
+        <div class="who"><span class="av">NB</span><div><b>Nabil Barkallah</b><span>✓ Verified</span></div></div>
+        <h4>“This community is the real deal”</h4>
+        <p>“This isn't a scam. I actually made money through this course — I was able to close $4K profit worth of deals within a month after going through it. They really spoonfeed you unbelievably valuable information.”</p>
+      </article>
+      <article class="rcard reveal">
+        <div class="who"><span class="av">FA</span><div><b>Fawad Akbari</b><span>✓ Verified</span></div></div>
+        <h4>“Taught me more than 4 years of university”</h4>
+        <p>“I've closed 2 deals so far, which honestly proves that this thing works. I was skeptical at first like a lot of people probably are, but this is a legit business. The coaches genuinely care.”</p>
+      </article>
+      <article class="rcard reveal">
+        <div class="who"><span class="av">MH</span><div><b>M. Hamid</b><span>✓ Verified</span></div></div>
+        <h4>“Life changing”</h4>
+        <p>“AllahummaBarik, this program is truly life changing — not just in business but in other aspects of life. Physically, financially and most importantly spiritually. I became a better Muslim after joining.”</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq wrap" id="s-faq">
+  <p class="eyebrow reveal">Questions, answered</p>
+  <h2 class="reveal">Before you ask</h2>
+  <div class="list reveal">
+    <details>
+      <summary>Is this business model actually halal? <span class="plus">+</span></summary>
+      <p class="a">Yes. You're connecting brands with influencers and taking a cut for the work. <b>No interest, no haram products, no shady industries.</b> The whole model was built by Muslims, for Muslims — and endorsed by major scholars in the ummah. The Halal Filter is the first thing covered on the training.</p>
+    </details>
+    <details>
+      <summary>Do I need any experience to attend? <span class="plus">+</span></summary>
+      <p class="a">No. The masterclass is built for brothers starting from zero. <b>No audience, no content, no prior experience needed.</b> If you can write an email, you can learn the mechanics.</p>
+    </details>
+    <details>
+      <summary>I have a full-time 9-5. Can I really do this on the side? <span class="plus">+</span></summary>
+      <p class="a">Yes. Most brothers doing this started with a 9-5. The work fits around your schedule — lunch breaks, evenings after Isha, weekends. <b>2–3 hours a day is enough to land your first deal.</b></p>
+    </details>
+    <details>
+      <summary>I don't have a following or audience. Will this still work? <span class="plus">+</span></summary>
+      <p class="a">Yes. The work is done over email, not in front of a camera. <b>That's the whole point of being the middleman</b> — no following, no content, no personal brand.</p>
+    </details>
+    <details>
+      <summary>I've tried e-com, FBA, or trading before. How is this different? <span class="plus">+</span></summary>
+      <p class="a">This isn't e-com, FBA, or trading. <b>No inventory, no capital risk, no product to build.</b> The work is email outreach connecting brands with influencers. Most brothers on the training tried something else first — this is the model that finally worked, alhamdulillah.</p>
+    </details>
+    <details>
+      <summary>Is this really free? What's the catch? <span class="plus">+</span></summary>
+      <p class="a">Yes — <b>90 minutes of training, no charge.</b> No catch: Abu Lahya teaches the full model live. If you want help implementing it afterwards, there's a program — but the training stands on its own.</p>
+    </details>
+    <details>
+      <summary>What if I can't make it live? <span class="plus">+</span></summary>
+      <p class="a"><b>The replay is NOT guaranteed, so make sure you show up.</b> Seats are limited on Zoom, and the brothers who show up live get their questions answered. Bring a notebook.</p>
+    </details>
+  </div>
+</section>
+
+<!-- final CTA -->
+<section class="section final pattern" id="s-final">
+  <div class="wrap">
+    <p class="eyebrow reveal">Your seat is free</p>
+    <h2 class="reveal">One skill. Ninety days. Every dollar halal.</h2>
+    <div class="count reveal" aria-hidden="true">
+      <div class="cell"><b data-t="d">00</b><span>days</span></div>
+      <div class="cell"><b data-t="h">00</b><span>hrs</span></div>
+      <div class="cell"><b data-t="m">00</b><span>min</span></div>
+      <div class="cell"><b data-t="s">00</b><span>sec</span></div>
+    </div>
+    <button class="cta reveal" data-open-modal>Yes, save my free seat <span class="arrow">→</span></button>
+    <p class="urgency reveal"><b data-date-long>Wednesday</b> · 2PM EST / 7PM UK · The replay is <b>NOT</b> guaranteed — show up live.</p>
+  </div>
+</section>
+</main>
+
+<footer id="s-footer">
+  <div class="wrap">
+    <div class="cols">
+      <a class="wordmark" href="#" aria-label="Abu Lahya — home">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2l3.4 7 7.6 1.1-5.5 5.4 1.3 7.6L16 19.5l-6.8 3.6 1.3-7.6L5 10.1 12.6 9z" fill="#d9b45b"/></svg>
+        ABU LAHYA
+      </a>
+      <p class="fine">The Halal Money Masterclass · Free 90-minute training on Zoom · © 2026 IMA Accelerator</p>
+    </div>
+    <p class="disclaimer">
+      This is a free educational training. The results described on this page (including income figures)
+      are the results of specific individuals and are not typical; they depend on skill, effort, market
+      conditions and circumstances outside anyone's control. Nothing on this page is financial, legal,
+      tax or religious advice. By registering you agree to receive event-related emails — unsubscribe any time.
+    </p>
+  </div>
+</footer>
+
+<div class="sticky-cta" id="stickyCta" aria-hidden="true">
+  <p class="t">Free masterclass starts in<br><b data-mini-count>--:--:--</b></p>
+  <button class="cta" data-open-modal>Save my seat →</button>
+</div>
+
+<!-- registration modal -->
+<div class="overlay" id="register" role="dialog" aria-modal="true" aria-labelledby="regTitle" hidden>
+  <div class="modal" id="modalBox">
+    <button class="close" data-close-modal aria-label="Close registration form">×</button>
+    <div class="badges" aria-hidden="true">
+      <span>★ 100% Free</span><span>💻 On Zoom</span><span>⏱ 90 Min Training</span>
+    </div>
+    <h3 id="regTitle">Register Your Spot Now</h3>
+    <p class="note">Just enter your name, email &amp; number to lock in your free seat.
+      The replay is <b>NOT</b> guaranteed, so make sure you show up.</p>
+
+    <form id="regForm" novalidate>
+      <div class="field">
+        <label for="f-name">First name</label>
+        <input id="f-name" name="name" type="text" autocomplete="given-name" placeholder="Yusuf" required>
+        <p class="fielderr">Please enter your name.</p>
+      </div>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required>
+        <p class="fielderr">That email doesn't look right.</p>
+      </div>
+      <div class="field">
+        <label for="f-phone">Phone (WhatsApp)</label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+44 7…" required>
+        <p class="fielderr">Please enter a valid number (with country code).</p>
+      </div>
+      <button class="cta" type="submit">Yes, save my free seat <span class="arrow">→</span></button>
+      <p class="tiny">The Zoom link, reminders and your free bonus arrive on WhatsApp — that's why we ask for your number.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- next event: Wednesday 18:00 UTC (2PM EST / 7PM UK) ---------- */
+  function nextEvent(){
+    var now = new Date();
+    var d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 18, 0, 0));
+    var WEDNESDAY = 3;
+    var shift = (WEDNESDAY - d.getUTCDay() + 7) % 7;
+    d.setUTCDate(d.getUTCDate() + shift);
+    if (d <= now) d.setUTCDate(d.getUTCDate() + 7);
+    return d;
+  }
+  var eventAt = nextEvent();
+
+  var LONG = {weekday:"long", month:"short", day:"numeric"};
+  var SHORT = {weekday:"short", month:"short", day:"numeric"};
+  document.querySelectorAll("[data-date-long]").forEach(function(el){ el.textContent = eventAt.toLocaleDateString("en-US", LONG); });
+  document.querySelectorAll("[data-date-short]").forEach(function(el){ el.textContent = eventAt.toLocaleDateString("en-US", SHORT); });
+
+  var ld = document.createElement("script");
+  ld.type = "application/ld+json";
+  ld.textContent = JSON.stringify({
+    "@context":"https://schema.org","@type":"Event",
+    "name":"The Halal Money Masterclass",
+    "description":"Free 90-minute training on the remote email skill. 100% halal — no face, no audience, no products.",
+    "startDate": eventAt.toISOString(),
+    "eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode",
+    "isAccessibleForFree": true,
+    "location":{"@type":"VirtualLocation","url": location.href},
+    "organizer":{"@type":"Person","name":"Abu Lahya"}
+  });
+  document.head.appendChild(ld);
+
+  /* ---------- countdown ---------- */
+  var pad = function(n){ return String(n).padStart(2,"0"); };
+  var cells = { d: document.querySelectorAll('[data-t="d"]'), h: document.querySelectorAll('[data-t="h"]'),
+                m: document.querySelectorAll('[data-t="m"]'), s: document.querySelectorAll('[data-t="s"]') };
+  var mini = document.querySelector("[data-mini-count]");
+  function tick(){
+    var ms = eventAt - Date.now();
+    if (ms < 0){ eventAt = nextEvent(); ms = eventAt - Date.now(); }
+    var s = Math.floor(ms/1000);
+    var v = { d: Math.floor(s/86400), h: Math.floor(s%86400/3600), m: Math.floor(s%3600/60), s: s%60 };
+    for (var k in v) cells[k].forEach(function(el){ el.textContent = pad(v[k]); });
+    if (mini) mini.textContent = v.d + "d " + pad(v.h) + ":" + pad(v.m) + ":" + pad(v.s);
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---------- marquee: duplicate content for seamless loop ---------- */
+  document.querySelectorAll("[data-marquee]").forEach(function(m){
+    m.innerHTML += m.innerHTML;
+  });
+
+  /* ---------- scroll reveal ---------- */
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced || !("IntersectionObserver" in window)){
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, {threshold:.12});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- sticky mobile CTA ---------- */
+  var sticky = document.getElementById("stickyCta");
+  var hero = document.querySelector(".hero");
+  if (sticky && hero && "IntersectionObserver" in window){
+    new IntersectionObserver(function(entries){
+      var out = !entries[0].isIntersecting;
+      sticky.classList.toggle("show", out);
+      sticky.setAttribute("aria-hidden", String(!out));
+    }, {threshold:0}).observe(hero);
+  }
+
+  /* ---------- modal ---------- */
+  var overlay = document.getElementById("register");
+  var modal = document.getElementById("modalBox");
+  var lastFocus = null;
+  function openModal(){
+    lastFocus = document.activeElement;
+    overlay.hidden = false;
+    requestAnimationFrame(function(){ overlay.classList.add("open"); });
+    document.body.style.overflow = "hidden";
+    var first = modal.querySelector("input");
+    if (first) setTimeout(function(){ first.focus(); }, 120);
+  }
+  function closeModal(){
+    overlay.classList.remove("open");
+    document.body.style.overflow = "";
+    setTimeout(function(){ overlay.hidden = true; }, 200);
+    if (lastFocus) lastFocus.focus();
+  }
+  document.querySelectorAll("[data-open-modal]").forEach(function(b){
+    b.addEventListener("click", function(e){ e.preventDefault(); openModal(); });
+  });
+  document.querySelectorAll("[data-close-modal]").forEach(function(b){ b.addEventListener("click", closeModal); });
+  overlay.addEventListener("click", function(e){ if (e.target === overlay) closeModal(); });
+  document.addEventListener("keydown", function(e){
+    if (overlay.hidden) return;
+    if (e.key === "Escape") closeModal();
+    if (e.key === "Tab"){
+      var els = modal.querySelectorAll("button, input, a[href]");
+      var list = Array.prototype.filter.call(els, function(el){ return el.offsetParent !== null; });
+      if (!list.length) return;
+      var first = list[0], last = list[list.length-1];
+      if (e.shiftKey && document.activeElement === first){ last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last){ first.focus(); e.preventDefault(); }
+    }
+  });
+
+  /* ---------- form: validate → (optional webhook) → real funnel confirmation ---------- */
+  var CONFIRMATION_URL = "https://event.imaccelerator.com/confirmation/";
+  var FUNNEL_VERSION = "v2-premium";
+  var WEBHOOK_URL = ""; // optional: CRM/webhook (GHL, Zapier, Make, Close) fires before redirect
+
+  var form = document.getElementById("regForm");
+  function setErr(input, on){
+    input.classList.toggle("err", on);
+    input.closest(".field").classList.toggle("show-err", on);
+  }
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var name = form.name, email = form.email, phone = form.phone;
+    var okName = name.value.trim().length >= 2;
+    var okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim());
+    var okPhone = /^\+?[\d\s().-]{7,}$/.test(phone.value.trim());
+    setErr(name, !okName); setErr(email, !okEmail); setErr(phone, !okPhone);
+    if (!(okName && okEmail && okPhone)) return;
+
+    var btn = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    btn.textContent = "Locking your seat…";
+
+    var payload = {
+      name: name.value.trim(), email: email.value.trim(), phone: phone.value.trim(),
+      event_at: eventAt.toISOString(), page: location.href, funnel_version: FUNNEL_VERSION
+    };
+    if (WEBHOOK_URL){
+      fetch(WEBHOOK_URL, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)}).catch(function(){});
+    }
+    var q = new URLSearchParams({
+      name: payload.name, email: payload.email, phone: payload.phone, funnelVersion: FUNNEL_VERSION
+    });
+    setTimeout(function(){ location.href = CONFIRMATION_URL + "?" + q.toString(); }, 450);
+  });
+})();
+</script>
+
+<!-- design-rationale tour -->
+<script>
+window.TOUR_STEPS = [
+  {sel:".announce", title:"Scarcity starts above the pixel fold", body:"The announce bar restates the event date and the single action (save your seat) before any scrolling happens. It also auto-updates — a stale date is the fastest way to kill trust on a webinar page."},
+  {sel:"#s-headline", title:"The hook is proven — so it stays", body:"This headline is the control from the original funnel. It's a pattern interrupt with a built-in objection ('feels haram') that the rest of the page answers. When copy is already converting, you redesign around it, not over it."},
+  {sel:"#s-count", title:"A countdown that never lies", body:"The timer computes the next real Wednesday 2PM EST slot in the visitor's browser. No fake evergreen timer that resets on refresh — this audience is skeptical of exactly that trick, and trust is the currency here."},
+  {sel:"#s-cta", title:"First-person CTA, one action", body:"'Yes, save MY free seat' converts better than imperative labels because the visitor completes the sentence in their own head. There is exactly one action on this page — every button opens the same form."},
+  {sel:"#s-social", title:"Proof clustered at the decision point", body:"Registered count and faces sit directly under the CTA, not in a separate section — social proof works hardest within eye-distance of the button."},
+  {sel:"#s-photo", title:"A real face, real numbers", body:"The founder's actual photo replaces stock imagery, with the two most credible stats floating on it. For an audience burned by anonymous gurus, the face IS the offer."},
+  {sel:"#s-transform", title:"Identity, not features", body:"Before/after sells the transformation (waiter → free & halal), not the mechanism. The mechanism is the masterclass's job; the page's job is to make the visitor see themselves on the left card."},
+  {sel:"#s-founder", title:"The trust anchor for a skeptical niche", body:"The 'threw away the Ledger with his earnings on it' story is the single most persuasive element for this audience — it proves values before profit. That's why it gets real photos and three chapters, not one paragraph."},
+  {sel:"#s-wins", title:"Specific wins beat big claims", body:"Real names, real faces on video, specific numbers and timelines ($40K in 6 weeks) — specificity is what separates proof from claims. Videos are lazy-loaded so they don't tax the first paint."},
+  {sel:"#s-wall", title:"Volume proof", body:"The marquee of community screenshots proves the wins aren't cherry-picked — there are too many to read. Motion pauses on hover and disables for reduced-motion users."},
+  {sel:"#s-faq", title:"The FAQ kills the top objection first", body:"'Is this actually halal?' is question #1 because it's THE objection for this offer. The order of an FAQ is a ranked list of reasons people don't buy."},
+  {sel:"#regForm", title:"Phone field, justified", body:"Asking for a phone number costs conversion — unless you explain it. The microcopy says exactly why: the funnel runs on WhatsApp. On submit, the form hands off to the real confirmation flow carrying funnelVersion=v2-premium, so design variants can be split-tested downstream."}
+];
+</script>
+<script src="../shared/tour.js"></script>
+</body>
+</html>
