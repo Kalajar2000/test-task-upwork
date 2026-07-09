@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  Variant 04 — "VSL" (original build, original copy)
+  Hypothesis: for warm/retargeted traffic, a video does the selling better
+  than sections do. So the page gets out of the way: headline → video →
+  CTA → three answers → done. The player currently holds a placeholder clip
+  from the client's funnel — production swaps in the real VSL file.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Halal Money Masterclass — watch first, then decide</title>
+<meta name="description" content="Watch the short breakdown, then grab a free seat: the halal brand-and-influencer deal desk, taught live in a free 90-minute masterclass.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Watch This Before You Take A Seat">
+<meta property="og:description" content="The 2-minute version of the free Halal Money Masterclass — then decide.">
+<meta property="og:site_name" content="The Halal Money Masterclass">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060d0a">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23060d0a'/%3E%3Cpath d='M11 8l12 8-12 8z' fill='%23d9b45b'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/tour.css">
+
+<style>
+:root{
+  --bg:#060d0a; --bg-2:#0a130e; --panel:#0d1a13; --panel-2:#101f17;
+  --ink:#f2eee3; --muted:#a7b3a8; --faint:#6f7d72;
+  --gold:#d9b45b; --gold-2:#e9cb7b; --emerald:#2fbf83;
+  --line:rgba(217,180,91,.16); --line-soft:rgba(242,238,227,.08);
+  --font-d:"Fraunces",Georgia,serif; --font-b:"Inter",-apple-system,"Segoe UI",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg,video{display:block;max-width:100%}
+a{color:inherit}
+.wrap{width:min(880px,100% - 40px);margin-inline:auto}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+
+.announce{background:linear-gradient(90deg,#123423,#0d2a1b 50%,#123423);border-bottom:1px solid var(--line);text-align:center;padding:9px 16px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-2)}
+.announce b{color:var(--ink)}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.wordmark{font-family:var(--font-d);font-weight:700;font-size:19px;display:flex;align-items:center;gap:10px;text-decoration:none}
+.wordmark svg{width:26px;height:26px}
+.top .mini-cta{font-size:14px;font-weight:700;text-decoration:none;color:var(--bg);background:var(--gold);padding:9px 18px;border-radius:999px}
+
+.hero{text-align:center;padding:clamp(30px,5vw,52px) 0 clamp(60px,8vw,90px);position:relative}
+.hero::after{content:"";position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:min(640px,85vw);height:380px;pointer-events:none;background:radial-gradient(closest-side,rgba(217,180,91,.12),transparent 70%)}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;background:rgba(217,180,91,.07);padding:7px 16px;font-size:13px;font-weight:600;color:var(--gold-2)}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 4px rgba(47,191,131,.15)}
+h1{font-family:var(--font-d);font-weight:640;font-size:clamp(32px,5.6vw,56px);line-height:1.07;letter-spacing:-.015em;margin:20px auto 14px;max-width:18em;position:relative;z-index:1}
+h1 em{font-style:italic;background:linear-gradient(100deg,var(--gold-2),var(--gold) 60%,#b78c33);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lede{color:var(--muted);max-width:52ch;margin:0 auto 30px;font-size:clamp(15.5px,1.9vw,18px)}
+.hero .lede b{color:var(--ink)}
+
+.player{position:relative;margin:0 auto 12px;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#020503;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 1px rgba(217,180,91,.06)}
+.player video{width:100%;max-height:66vh;object-fit:contain;background:#020503}
+.player .hint{position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:rgba(6,13,10,.75);border:1px solid var(--line-soft);border-radius:999px;padding:5px 11px;pointer-events:none}
+.under{font-size:12.5px;color:var(--faint);margin-bottom:30px}
+
+.count{display:flex;justify-content:center;gap:clamp(8px,1.4vw,14px);margin:0 0 24px}
+.count .lbl{align-self:center;margin-right:6px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.cell{min-width:clamp(58px,7vw,78px);background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:10px 8px 8px;text-align:center}
+.cell b{display:block;font-family:var(--font-d);font-weight:600;font-size:clamp(22px,3.4vw,32px);line-height:1;color:var(--gold-2);font-variant-numeric:tabular-nums}
+.cell span{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:700}
+
+.cta{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:var(--font-b);font-weight:800;font-size:clamp(16px,2vw,19px);color:#0d1a0f;cursor:pointer;border:0;background:linear-gradient(180deg,var(--gold-2),var(--gold));padding:17px 52px;border-radius:999px;box-shadow:0 10px 40px rgba(217,180,91,.35),inset 0 1px 0 rgba(255,255,255,.4);transition:transform .15s ease,box-shadow .15s ease;text-decoration:none}
+.cta:hover{transform:translateY(-2px);box-shadow:0 16px 52px rgba(217,180,91,.45),inset 0 1px 0 rgba(255,255,255,.4)}
+.cta .s{font-size:12.5px;font-weight:700;opacity:.8}
+.registered{margin-top:16px;font-size:14px;color:var(--muted)}
+.registered b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+.strip{border-block:1px solid var(--line-soft);background:var(--bg-2)}
+.strip .row{display:grid;grid-template-columns:repeat(4,1fr);padding:24px 0}
+.stat{text-align:center;padding:6px 8px}
+.stat b{display:block;font-family:var(--font-d);font-weight:600;font-size:clamp(20px,3vw,28px);color:var(--gold-2);line-height:1.15}
+.stat span{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.stat + .stat{border-left:1px solid var(--line-soft)}
+
+.qa{padding:clamp(56px,8vw,88px) 0}
+.qa .eyebrow{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);text-align:center}
+.qa h2{font-family:var(--font-d);font-weight:600;font-size:clamp(26px,3.8vw,38px);text-align:center;margin:12px 0 34px}
+.qa .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.qcard{border:1px solid var(--line-soft);border-radius:16px;background:var(--panel);padding:24px}
+.qcard h3{font-size:16.5px;font-weight:800;margin-bottom:8px}
+.qcard p{font-size:14.5px;color:var(--muted)}
+.qcard p b{color:var(--ink)}
+
+.final{text-align:center;padding:clamp(56px,8vw,90px) 0;background:var(--bg-2);border-top:1px solid var(--line-soft)}
+.final h2{font-family:var(--font-d);font-weight:600;font-size:clamp(28px,4.2vw,42px);margin-bottom:26px}
+
+footer{border-top:1px solid var(--line-soft);padding:36px 0 52px}
+footer .fine{font-size:12.5px;color:var(--faint)}
+footer .disclaimer{font-size:12.5px;color:var(--faint);max-width:72ch;line-height:1.7;margin-top:14px}
+
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;align-items:center;justify-content:space-between;gap:14px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(6,13,10,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s ease}
+.sticky-cta.show{transform:translateY(0)}
+.sticky-cta .t{font-size:12.5px;color:var(--muted);line-height:1.35}
+.sticky-cta .t b{color:var(--gold-2);font-variant-numeric:tabular-nums}
+.sticky-cta .cta{flex-direction:row;padding:13px 22px;font-size:15px;flex:none}
+
+.overlay{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(3,7,5,.78);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .2s ease}
+.overlay.open{opacity:1;pointer-events:auto}
+.modal{width:min(480px,100%);max-height:calc(100vh - 40px);overflow:auto;background:linear-gradient(180deg,#12241a,var(--panel));border:1px solid var(--line);border-radius:22px;padding:34px 30px 30px;position:relative;transform:translateY(14px) scale(.98);transition:transform .2s ease}
+.overlay.open .modal{transform:none}
+.modal .close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line-soft);background:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+.modal h3{font-family:var(--font-d);font-weight:600;font-size:28px;text-align:center}
+.modal .note{font-size:14px;color:var(--muted);text-align:center;margin:10px 0 22px}
+.modal .note b{color:var(--gold-2)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;padding:14px 16px;font-size:16px;color:var(--ink);background:rgba(6,13,10,.6);border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-b)}
+.field input:focus{outline:none;border-color:var(--gold)}
+.field input.err{border-color:#e0685f}
+.field .fielderr{display:none;font-size:12.5px;color:#e0885f;margin-top:5px}
+.field.show-err .fielderr{display:block}
+.modal .cta{width:100%;margin-top:8px;flex-direction:row}
+.modal .tiny{margin-top:14px;font-size:12px;color:var(--faint);text-align:center}
+.modal .success{display:none;text-align:center;padding:26px 0 10px}
+.modal.done form,.modal.done .note,.modal.done h3{display:none}
+.modal.done .success{display:block}
+.success .check{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:rgba(47,191,131,.12);border:1px solid rgba(47,191,131,.4);display:grid;place-items:center;color:var(--emerald)}
+.success h3{display:block!important;margin-bottom:10px}
+.success p{color:var(--muted);font-size:15px;max-width:36ch;margin:0 auto}
+.success p b{color:var(--ink)}
+
+@media (max-width:880px){.qa .grid{grid-template-columns:1fr}.strip .row{grid-template-columns:1fr 1fr;row-gap:16px}.stat:nth-child(3){border-left:none}.sticky-cta{display:flex}}
+@media (max-width:520px){body{font-size:16px}.count .lbl{display:none}.top .mini-cta{display:none}.announce{font-size:10px}}
+</style>
+</head>
+<body>
+
+<div class="announce">Free Masterclass · <b data-date-short>Wednesday</b> · 2PM EST / 7PM UK</div>
+
+<header class="top wrap">
+  <a class="wordmark" href="#" aria-label="Abu Lahya — home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2l3.4 7 7.6 1.1-5.5 5.4 1.3 7.6L16 19.5l-6.8 3.6 1.3-7.6L5 10.1 12.6 9z" fill="#d9b45b"/></svg>
+    ABU LAHYA
+  </a>
+  <a class="mini-cta" href="#register" data-open-modal>Save my seat</a>
+</header>
+
+<main>
+<section class="hero wrap" id="s-hero">
+  <span class="badge" id="s-badge"><span class="dot" aria-hidden="true"></span>Free · 90-minute live class · <span data-date-short>Wednesday</span></span>
+  <h1 id="s-headline">Two Minutes Now, <em>Or Ninety Later.</em> Start Here.</h1>
+  <p class="lede">
+    The short version, straight from <b>Abu Lahya</b>: what the free masterclass covers,
+    who it's for, and how the model stays <b>100% halal</b>. Watch it, then decide if the
+    full 90 minutes is worth your Wednesday.
+  </p>
+
+  <div class="player" id="s-player">
+    <video src="../assets/videos/vsl.mp4" controls preload="metadata" playsinline></video>
+    <span class="hint">▶ 2 min</span>
+  </div>
+  <p class="under">Sound on — he talks fast.</p>
+
+  <div class="count" id="s-count" role="timer" aria-label="Time until the masterclass starts">
+    <span class="lbl">Class starts in</span>
+    <div class="cell"><b data-t="d">00</b><span>days</span></div>
+    <div class="cell"><b data-t="h">00</b><span>hrs</span></div>
+    <div class="cell"><b data-t="m">00</b><span>min</span></div>
+    <div class="cell"><b data-t="s">00</b><span>sec</span></div>
+  </div>
+
+  <button class="cta" id="s-cta" data-open-modal>
+    <span>Good — save my free seat →</span>
+    <span class="s"><span data-date-long>Wednesday</span> · 2PM EST / 7PM UK · live on Zoom</span>
+  </button>
+  <p class="registered" id="s-social"><b data-counter="1847">1,847</b> brothers already registered · seats capped</p>
+</section>
+
+<section class="strip" id="s-stats">
+  <div class="wrap row">
+    <div class="stat"><b>2,000+</b><span>Brothers taught</span></div>
+    <div class="stat"><b>92%</b><span>Success rate</span></div>
+    <div class="stat"><b>$10M+</b><span>Student revenue</span></div>
+    <div class="stat"><b>100%</b><span>Halal</span></div>
+  </div>
+</section>
+
+<section class="qa wrap" id="s-faq">
+  <p class="eyebrow">Still deciding?</p>
+  <h2>Three answers before you click</h2>
+  <div class="grid">
+    <article class="qcard">
+      <h3>Is it actually halal?</h3>
+      <p>Yes — <b>you're paid a fee for real brokerage work</b> between brands and influencers. No riba, no gambling, nothing you'd hide. The class opens with the halal audit.</p>
+    </article>
+    <article class="qcard">
+      <h3>Do I need experience or money?</h3>
+      <p>Neither. <b>No audience, no capital, no store.</b> A laptop, clear writing, and 2–3 focused hours a day is the honest requirement.</p>
+    </article>
+    <article class="qcard">
+      <h3>What if I can't attend live?</h3>
+      <p><b>Come live.</b> Zoom seats are capped, live questions get answered, and a replay is never promised.</p>
+    </article>
+  </div>
+</section>
+
+<section class="final" id="s-final">
+  <div class="wrap">
+    <h2>You watched it. You already know.</h2>
+    <button class="cta" data-open-modal>
+      <span>Save my free seat →</span>
+      <span class="s"><span data-date-long>Wednesday</span> · 2PM EST / 7PM UK · 90 minutes</span>
+    </button>
+  </div>
+</section>
+</main>
+
+<footer id="s-footer">
+  <div class="wrap">
+    <p class="fine">The Halal Money Masterclass · Free 90-minute training on Zoom</p>
+    <p class="disclaimer">
+      This is a free educational training. Results described are those of specific individuals and are
+      not typical; they depend on skill, effort and circumstances. Nothing here is financial, legal, tax
+      or religious advice. By registering you agree to receive event-related emails — unsubscribe any time.
+    </p>
+  </div>
+</footer>
+
+<div class="sticky-cta" id="stickyCta" aria-hidden="true">
+  <p class="t">Class starts in<br><b data-mini-count>--:--:--</b></p>
+  <button class="cta" data-open-modal>Save my seat →</button>
+</div>
+
+<div class="overlay" id="register" role="dialog" aria-modal="true" aria-labelledby="regTitle" hidden>
+  <div class="modal" id="modalBox">
+    <button class="close" data-close-modal aria-label="Close registration form">×</button>
+    <h3 id="regTitle">Save your seat</h3>
+    <p class="note">Zoom link by email, reminders on WhatsApp. <b>Live means live</b> — replays aren't promised.</p>
+
+    <form id="regForm" novalidate>
+      <div class="field">
+        <label for="f-name">First name</label>
+        <input id="f-name" name="name" type="text" autocomplete="given-name" placeholder="Yusuf" required>
+        <p class="fielderr">Please enter your name.</p>
+      </div>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required>
+        <p class="fielderr">That email doesn't look right.</p>
+      </div>
+      <div class="field">
+        <label for="f-phone">Phone (WhatsApp)</label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+44 7…" required>
+        <p class="fielderr">Please enter a valid number (with country code).</p>
+      </div>
+      <button class="cta" type="submit">Save my free seat →</button>
+      <p class="tiny">No spam — the link, the reminders, the class. That's it.</p>
+    </form>
+
+    <div class="success">
+      <div class="check" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h3>Seat saved</h3>
+      <p>The Zoom link is heading to your inbox. Put <b data-date-long>Wednesday</b>, 2PM EST / 7PM UK in your calendar — and <b>show up live</b>.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  function nextEvent(){
+    var now = new Date();
+    var d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 18, 0, 0));
+    var WEDNESDAY = 3;
+    var shift = (WEDNESDAY - d.getUTCDay() + 7) % 7;
+    d.setUTCDate(d.getUTCDate() + shift);
+    if (d <= now) d.setUTCDate(d.getUTCDate() + 7);
+    return d;
+  }
+  var eventAt = nextEvent();
+
+  var LONG = {weekday:"long", month:"short", day:"numeric"};
+  var SHORT = {weekday:"short", month:"short", day:"numeric"};
+  document.querySelectorAll("[data-date-long]").forEach(function(el){ el.textContent = eventAt.toLocaleDateString("en-US", LONG); });
+  document.querySelectorAll("[data-date-short]").forEach(function(el){ el.textContent = eventAt.toLocaleDateString("en-US", SHORT); });
+
+  var ld = document.createElement("script");
+  ld.type = "application/ld+json";
+  ld.textContent = JSON.stringify({
+    "@context":"https://schema.org","@type":"Event",
+    "name":"The Halal Money Masterclass",
+    "description":"Free 90-minute live training on the halal brand-and-influencer deal desk model.",
+    "startDate": eventAt.toISOString(),
+    "eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode",
+    "isAccessibleForFree": true,
+    "location":{"@type":"VirtualLocation","url": location.href},
+    "organizer":{"@type":"Person","name":"Abu Lahya"}
+  });
+  document.head.appendChild(ld);
+
+  var pad = function(n){ return String(n).padStart(2,"0"); };
+  var cells = { d: document.querySelectorAll('[data-t="d"]'), h: document.querySelectorAll('[data-t="h"]'),
+                m: document.querySelectorAll('[data-t="m"]'), s: document.querySelectorAll('[data-t="s"]') };
+  var mini = document.querySelector("[data-mini-count]");
+  function tick(){
+    var ms = eventAt - Date.now();
+    if (ms < 0){ eventAt = nextEvent(); ms = eventAt - Date.now(); }
+    var s = Math.floor(ms/1000);
+    var v = { d: Math.floor(s/86400), h: Math.floor(s%86400/3600), m: Math.floor(s%3600/60), s: s%60 };
+    for (var k in v) cells[k].forEach(function(el){ el.textContent = pad(v[k]); });
+    if (mini) mini.textContent = v.d + "d " + pad(v.h) + ":" + pad(v.m) + ":" + pad(v.s);
+  }
+  tick(); setInterval(tick, 1000);
+
+  var sticky = document.getElementById("stickyCta");
+  var hero = document.querySelector(".hero");
+  if (sticky && hero && "IntersectionObserver" in window){
+    new IntersectionObserver(function(entries){
+      var out = !entries[0].isIntersecting;
+      sticky.classList.toggle("show", out);
+      sticky.setAttribute("aria-hidden", String(!out));
+    }, {threshold:0}).observe(hero);
+  }
+
+  var overlay = document.getElementById("register");
+  var modal = document.getElementById("modalBox");
+  var lastFocus = null;
+  function openModal(){
+    lastFocus = document.activeElement;
+    overlay.hidden = false;
+    requestAnimationFrame(function(){ overlay.classList.add("open"); });
+    document.body.style.overflow = "hidden";
+    var first = modal.querySelector("input");
+    if (first) setTimeout(function(){ first.focus(); }, 120);
+  }
+  function closeModal(){
+    overlay.classList.remove("open");
+    document.body.style.overflow = "";
+    setTimeout(function(){ overlay.hidden = true; }, 200);
+    if (lastFocus) lastFocus.focus();
+  }
+  document.querySelectorAll("[data-open-modal]").forEach(function(b){
+    b.addEventListener("click", function(e){ e.preventDefault(); openModal(); });
+  });
+  document.querySelectorAll("[data-close-modal]").forEach(function(b){ b.addEventListener("click", closeModal); });
+  overlay.addEventListener("click", function(e){ if (e.target === overlay) closeModal(); });
+  document.addEventListener("keydown", function(e){
+    if (overlay.hidden) return;
+    if (e.key === "Escape") closeModal();
+    if (e.key === "Tab"){
+      var els = modal.querySelectorAll("button, input, a[href]");
+      var list = Array.prototype.filter.call(els, function(el){ return el.offsetParent !== null; });
+      if (!list.length) return;
+      var first = list[0], last = list[list.length-1];
+      if (e.shiftKey && document.activeElement === first){ last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last){ first.focus(); e.preventDefault(); }
+    }
+  });
+
+  /* Demo build: registrations stay on-page. Production wires WEBHOOK_URL
+     to the CRM (funnel_version keeps variant attribution). */
+  var FUNNEL_VERSION = "v4-vsl";
+  var WEBHOOK_URL = "";
+
+  var form = document.getElementById("regForm");
+  function setErr(input, on){
+    input.classList.toggle("err", on);
+    input.closest(".field").classList.toggle("show-err", on);
+  }
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var name = form.name, email = form.email, phone = form.phone;
+    var okName = name.value.trim().length >= 2;
+    var okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim());
+    var okPhone = /^\+?[\d\s().-]{7,}$/.test(phone.value.trim());
+    setErr(name, !okName); setErr(email, !okEmail); setErr(phone, !okPhone);
+    if (!(okName && okEmail && okPhone)) return;
+
+    var payload = {
+      name: name.value.trim(), email: email.value.trim(), phone: phone.value.trim(),
+      event_at: eventAt.toISOString(), page: location.href, funnel_version: FUNNEL_VERSION
+    };
+    if (WEBHOOK_URL){
+      fetch(WEBHOOK_URL, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)}).catch(function(){});
+    }
+    modal.classList.add("done");
+  });
+})();
+</script>
+
+<!-- variation-hypothesis tour -->
+<script>
+window.TOUR_STEPS = [
+  {sel:"#s-headline", title:"Hypothesis: the video sells better than sections", body:"This variant is for warm and retargeted traffic — people who've already met the offer in an ad. For them, one face-to-camera video outperforms another wall of sections, so the page's only job is getting play pressed."},
+  {sel:"#s-player", title:"One competing element: zero", body:"No before/after, no story chapters, no review grid above the fold — anything that competes with the play button lowers watch rate, and watch rate is this page's real conversion metric. (The clip is a placeholder from the client's funnel; production drops in the actual VSL.)"},
+  {sel:"#s-count", title:"The countdown is for the class, not the video", body:"Urgency stays anchored to the real event — the next Wednesday 2PM EST slot, computed live in the browser. Nothing on this page pretends to expire."},
+  {sel:"#s-cta", title:"The CTA assumes the video did its job", body:"'Good — save my free seat' is written as the sentence in the visitor's head right after watching. Date and format ride inside the button so there's no reason to scroll."},
+  {sel:"#s-faq", title:"Three answers, not eleven", body:"A VSL page keeps only the objections that survive the video: halal, experience/money, and the replay question. Everything else was the video's job."},
+  {sel:"#regForm", title:"No fake handoff", body:"Demo registrations stay on-page with a real success state — no dummy data into anyone's live funnel. In production the webhook fires with funnel_version=v4-vsl so this variant's watch→register→show-up rates attribute cleanly."}
+];
+</script>
+<script src="../shared/tour.js"></script>
+</body>
+</html>
