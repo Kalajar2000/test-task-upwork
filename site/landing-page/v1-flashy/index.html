@@ -3,24 +3,27 @@
 <head>
 <!--
   The Halal Money Masterclass — registration page (variant: "Flashy")
-  Rebuilt from scratch — no page builder, no template.
+  Rebuilt from scratch — no page builder, no template, original copy.
   Design language: funnel-native light — electric blue, orange highlights,
   WhatsApp green accents, Plus Jakarta Sans, confetti.
-  Sections: announce → hero (centered, founder photo below) → stats → agenda
-            → transformation → founder story (3 chapters, real photos)
-            → student wins (real videos) → proof wall → Trustpilot → FAQ
-            → final CTA → footer → modal
-  Form redirects to the live funnel's confirmation step, carrying
-  funnelVersion=v1-flashy so variants can be split-tested downstream.
+  Variation vs control: "second salary" promise, before/after photos in the
+  hero, date + price answered inside the CTA, compressed founder block,
+  five-question FAQ, in-modal success state (no redirect in the demo).
+  Sections: announce → hero (centered: badge → H1 → lede → before/after →
+            countdown → registered line → CTA) → stats → agenda
+            → who's teaching → student wins (real videos) → proof wall
+            → Trustpilot → FAQ → final CTA → footer → modal
+  The registration payload carries funnel_version=v1-flashy so variants
+  can be split-tested downstream once the CRM webhook is wired.
 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Halal Money Masterclass — Abu Lahya</title>
-<meta name="description" content="Free 90-minute training. The remote email skill that took Abu Lahya from a €11/hour waiter to $10K/month — 100% halal. No face, no audience, no products.">
+<meta name="description" content="Free 90-minute live class on Zoom. The halal email skill that pays like a second salary — how Abu Lahya went from €11/hour shifts to $10K months, and how 2,000+ brothers run the same play.">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="How To Make Money So Fast It Feels Haram">
-<meta property="og:description" content="Free 90-min masterclass. 100% halal. No face, no audience, no products. Just email.">
+<meta property="og:title" content="The Halal Skill That Pays Like A Second Salary">
+<meta property="og:description" content="Free 90-min live masterclass on Zoom. No face, no audience, no products — 100% halal.">
 <meta property="og:site_name" content="The Halal Money Masterclass">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2563eb">
@@ -97,17 +100,37 @@ header.top{display:flex;align-items:center;justify-content:space-between;padding
 
 .badge{display:inline-flex;align-items:center;gap:8px;border:2px solid rgba(37,211,102,.45);border-radius:999px;background:rgba(37,211,102,.10);padding:8px 18px;font-size:13.5px;font-weight:800;color:var(--green-ink)}
 .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(37,211,102,.18)}
-h1{font-weight:800;font-size:clamp(36px,5.6vw,66px);line-height:1.06;letter-spacing:-.025em;margin:24px auto 18px;max-width:19ch;position:relative;z-index:1}
+h1{font-weight:800;font-size:clamp(34px,5.4vw,64px);line-height:1.06;letter-spacing:-.025em;margin:24px auto 18px;max-width:24ch;position:relative;z-index:1}
 h1 em{font-style:italic;color:var(--orange)}
-.hero .lede{color:var(--muted);max-width:56ch;margin:0 auto 30px;font-size:clamp(16px,1.9vw,18.5px)}
+h1 em.g{color:var(--green-ink)}
+.hero .lede{color:var(--muted);max-width:56ch;margin:0 auto 32px;font-size:clamp(16px,1.9vw,18.5px)}
 .hero .lede strong{color:var(--ink);font-weight:800}
 .hero .lede .halal{color:var(--green-ink);font-weight:800}
 
-.count{display:flex;justify-content:center;gap:clamp(8px,1.4vw,14px);margin:0 0 30px}
+/* before / after cards */
+.ba{display:flex;align-items:center;justify-content:center;gap:clamp(10px,2vw,20px);margin:0 0 32px}
+.bacard{position:relative;width:clamp(140px,26vw,300px);flex:none;border-radius:20px;overflow:hidden;border:2px solid var(--line);box-shadow:var(--shadow);margin:0;background:var(--card)}
+.bacard img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.bacard.before img{filter:saturate(.35) contrast(.96)}
+.bacard .tag{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:5px 11px;border-radius:999px;background:rgba(15,23,42,.72);color:#fff}
+.bacard.after .tag{background:var(--orange)}
+.bacard figcaption{position:absolute;left:0;right:0;bottom:0;padding:34px 13px 12px;font-weight:800;font-size:clamp(12.5px,1.5vw,16.5px);line-height:1.3;color:#fff;text-align:left;background:linear-gradient(180deg,transparent,rgba(15,23,42,.88))}
+.bacard.after figcaption{background:linear-gradient(180deg,transparent 0%,rgba(234,88,12,.45) 40%,rgba(180,60,8,.94))}
+.ba-arrow{flex:none;display:grid;place-items:center;width:clamp(36px,5vw,52px);height:clamp(36px,5vw,52px);border-radius:50%;background:linear-gradient(180deg,var(--blue-2),var(--blue));color:#fff;box-shadow:0 10px 26px rgba(37,99,235,.30)}
+.ba-arrow svg{width:55%;height:55%}
+
+.count{display:flex;justify-content:center;gap:clamp(8px,1.4vw,14px);margin:0 0 24px}
 .count .lbl{align-self:center;margin-right:6px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:800}
 .cell{min-width:clamp(62px,7.5vw,84px);background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px 8px 10px;text-align:center;box-shadow:0 10px 26px rgba(37,99,235,.08)}
 .cell b{display:block;font-weight:800;font-size:clamp(24px,3.6vw,36px);line-height:1;color:var(--blue);font-variant-numeric:tabular-nums}
 .cell span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:800}
+
+.social{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 0 28px}
+.avatars{display:flex}
+.avatars .av{width:38px;height:38px;border-radius:50%;border:2px solid #fff;margin-left:-10px;display:grid;place-items:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(15,23,42,.14)}
+.avatars .av:first-child{margin-left:0}
+.social p{font-size:14px;color:var(--muted)}
+.social p b{color:var(--ink);font-variant-numeric:tabular-nums}
 
 .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font);font-weight:800;font-size:clamp(16px,2vw,19px);color:#fff;text-decoration:none;cursor:pointer;border:0;background:linear-gradient(180deg,var(--blue-2),var(--blue));padding:19px 42px;border-radius:999px;box-shadow:0 14px 36px rgba(37,99,235,.35),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .18s ease}
 .cta:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 20px 46px rgba(37,99,235,.45),inset 0 1px 0 rgba(255,255,255,.25)}
@@ -116,25 +139,9 @@ h1 em{font-style:italic;color:var(--orange)}
 .cta:hover .arrow{transform:translateX(4px)}
 .cta.orange{background:linear-gradient(180deg,var(--orange-2),var(--orange));box-shadow:0 14px 36px rgba(249,115,22,.40),inset 0 1px 0 rgba(255,255,255,.30)}
 .cta.orange:hover{box-shadow:0 20px 46px rgba(249,115,22,.50),inset 0 1px 0 rgba(255,255,255,.30)}
-.hero .meta{margin-top:16px;font-size:14.5px;color:var(--muted);font-weight:600}
-.hero .meta b{color:var(--ink);font-weight:800}
-
-.social{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:24px}
-.avatars{display:flex}
-.avatars .av{width:38px;height:38px;border-radius:50%;border:2px solid #fff;margin-left:-10px;display:grid;place-items:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(15,23,42,.14)}
-.avatars .av:first-child{margin-left:0}
-.social p{font-size:14px;color:var(--muted)}
-.social p b{color:var(--ink);font-variant-numeric:tabular-nums}
-
-.hero-photo{position:relative;max-width:520px;margin:56px auto 0}
-.hero-photo .frame{border-radius:var(--radius);overflow:hidden;border:2px solid var(--line);background:var(--card);box-shadow:var(--shadow),0 40px 90px rgba(37,99,235,.14)}
-.hero-photo img{width:100%;aspect-ratio:4/5;object-fit:cover}
-.chip{position:absolute;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 18px;box-shadow:0 16px 40px rgba(37,99,235,.18);text-align:left}
-.chip b{display:block;font-weight:800;font-size:21px;color:var(--blue);line-height:1.15}
-.chip.c2 b{color:var(--orange)}
-.chip span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:800}
-.chip.c1{top:22px;right:-22px}
-.chip.c2{bottom:30px;left:-22px}
+.cta.big{flex-direction:column;gap:4px;padding:17px 48px;line-height:1.25}
+.cta.big .when{display:block;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.88)}
+.cta.big .when b{color:#fff;font-weight:800}
 
 /* ---------- stats ---------- */
 .stats{background:var(--card);border-block:1px solid var(--line-soft)}
@@ -161,34 +168,18 @@ h1 em{font-style:italic;color:var(--orange)}
 .acard h3{font-size:20px;font-weight:800;margin:14px 0 8px;letter-spacing:-.01em}
 .acard p{color:var(--muted);font-size:15.5px}
 
-/* ---------- transformation ---------- */
-.transform .cards{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(14px,2.5vw,26px);align-items:stretch;margin-top:42px}
-.tcard{border:2px solid var(--line-soft);border-radius:var(--radius);background:var(--card);padding:32px 30px;box-shadow:0 14px 36px rgba(15,23,42,.06)}
-.tcard.after{border-color:rgba(37,211,102,.45);background:linear-gradient(180deg,#f2fdf6,var(--card));box-shadow:0 20px 50px rgba(37,211,102,.14)}
-.tcard .tag{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
-.tcard.after .tag{color:var(--green-ink)}
-.tcard .big{font-weight:800;font-size:clamp(34px,5vw,52px);line-height:1.05;letter-spacing:-.02em;margin:12px 0 8px}
-.tcard.before .big{color:var(--faint);text-decoration:line-through;text-decoration-color:rgba(249,115,22,.6);text-decoration-thickness:4px}
-.tcard.after .big{color:var(--green-ink)}
-.tcard p{color:var(--muted);font-size:15.5px}
-.t-arrow{align-self:center;display:grid;place-items:center;width:54px;height:54px;border-radius:50%;border:0;background:linear-gradient(180deg,var(--blue-2),var(--blue));color:#fff;box-shadow:0 10px 26px rgba(37,99,235,.30)}
-.t-arrow svg{width:22px;height:22px}
-
-/* ---------- founder story ---------- */
-.founder{background:var(--bg-alt)}
-.founder .chapter{display:grid;grid-template-columns:340px 1fr;gap:clamp(26px,5vw,64px);align-items:center;margin-top:52px}
-.founder .chapter.flip{grid-template-columns:1fr 340px}
-.founder .chapter.flip .photo{order:2}
+/* ---------- who's teaching ---------- */
+.founder{background:var(--card)}
+.founder .chapter{display:grid;grid-template-columns:340px 1fr;gap:clamp(26px,5vw,64px);align-items:center;margin-top:44px}
 .founder .photo{border-radius:var(--radius);overflow:hidden;border:2px solid var(--line);box-shadow:var(--shadow)}
 .founder .photo img{width:100%;aspect-ratio:4/5;object-fit:cover}
-.founder h3{font-weight:800;font-size:clamp(23px,2.8vw,30px);letter-spacing:-.015em;margin-bottom:14px}
-.founder h3 em{font-style:italic;color:var(--orange)}
-.founder p{color:var(--muted);margin-bottom:12px;font-size:16px}
+.founder .name{font-size:17px;margin-bottom:12px;color:var(--muted)}
+.founder .name b{color:var(--ink);font-weight:800;font-size:19px}
+.founder p{color:var(--muted);margin-bottom:14px;font-size:16.5px}
 .founder p b{color:var(--ink)}
-.founder blockquote{font-style:italic;font-weight:600;font-size:clamp(18px,2.2vw,22px);line-height:1.5;color:var(--ink);border-left:4px solid var(--orange);padding-left:20px;margin:18px 0 6px}
 
 /* ---------- student wins (videos) ---------- */
-.wins{background:var(--card)}
+.wins{background:var(--bg-alt)}
 .wins .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}
 .wcard{border:2px solid var(--line);border-radius:var(--radius);background:var(--card);overflow:hidden;box-shadow:var(--shadow)}
 .wcard video{width:100%;aspect-ratio:9/16;object-fit:cover;background:#0f172a;cursor:pointer}
@@ -198,7 +189,7 @@ h1 em{font-style:italic;color:var(--orange)}
 .wcard .cap p{font-size:14px;color:var(--muted);line-height:1.55}
 
 /* ---------- proof wall ---------- */
-.wall{padding:clamp(56px,7vw,84px) 0;overflow:hidden;background:var(--bg-alt)}
+.wall{padding:clamp(56px,7vw,84px) 0;overflow:hidden;background:var(--card)}
 .wall .head{text-align:center;margin-bottom:38px}
 .marquee{display:flex;gap:16px;width:max-content;animation:scroll 60s linear infinite}
 .marquee:hover{animation-play-state:paused}
@@ -208,7 +199,7 @@ h1 em{font-style:italic;color:var(--orange)}
 @media (prefers-reduced-motion:reduce){.marquee{flex-wrap:wrap;width:auto;animation:none}}
 
 /* ---------- trustpilot ---------- */
-.trust{background:var(--card);border-block:1px solid var(--line-soft)}
+.trust{background:var(--bg-alt)}
 .trust .head{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center}
 .trust .head img{height:30px;width:auto}
 .trust .head .lbl{font-weight:800;font-size:19px;color:#fff;background:var(--green-ink);border-radius:10px;padding:4px 14px}
@@ -223,7 +214,7 @@ h1 em{font-style:italic;color:var(--orange)}
 .rcard p{font-size:14px;color:var(--muted);line-height:1.6}
 
 /* ---------- FAQ ---------- */
-.faq{background:var(--bg-alt)}
+.faq{background:var(--card)}
 .faq .list{margin-top:38px}
 .faq details{background:var(--card);border:2px solid var(--line);border-radius:18px;margin-bottom:12px;box-shadow:0 10px 30px rgba(37,99,235,.07)}
 .faq summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 22px;font-size:clamp(16px,2vw,18.5px);font-weight:800}
@@ -281,6 +272,12 @@ footer .fine{font-size:12.5px;color:var(--faint)}
 .modal .cta{width:100%;margin-top:8px}
 .modal .cta[disabled]{opacity:.7;cursor:wait}
 .modal .tiny{margin-top:14px;font-size:12px;color:var(--faint);text-align:center}
+.modal .success{text-align:center;padding:14px 0 8px}
+.modal .success .check{width:66px;height:66px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:rgba(37,211,102,.14);border:2px solid rgba(37,211,102,.5);color:var(--green-ink)}
+.modal .success .check svg{width:30px;height:30px}
+.modal .success h4{font-size:24px;font-weight:800;letter-spacing:-.01em}
+.modal .success p{color:var(--muted);font-size:15px;margin-top:8px}
+.modal.done .badges,.modal.done h3,.modal.done .note,.modal.done form{display:none}
 
 /* ---------- reveal ---------- */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
@@ -288,15 +285,10 @@ footer .fine{font-size:12.5px;color:var(--faint)}
 
 /* ---------- responsive ---------- */
 @media (max-width:960px){
-  .hero-photo{max-width:420px}
-  .chip.c1{right:8px}.chip.c2{left:8px}
-  .founder .chapter,.founder .chapter.flip{grid-template-columns:1fr}
-  .founder .chapter.flip .photo{order:0}
+  .founder .chapter{grid-template-columns:1fr}
   .founder .photo{max-width:380px;margin-inline:auto}
   .wins .grid,.trust .grid{grid-template-columns:1fr}
   .agenda .grid{grid-template-columns:1fr}
-  .transform .cards{grid-template-columns:1fr}
-  .t-arrow{transform:rotate(90deg);justify-self:center}
   .stats .row{grid-template-columns:1fr 1fr}
   .sticky-cta{display:flex}
 }
@@ -305,19 +297,21 @@ footer .fine{font-size:12.5px;color:var(--faint)}
   .count .lbl{display:none}
   .top .mini-cta{display:none}
   .announce{font-size:10.5px;letter-spacing:.12em}
+  .bacard .tag{font-size:8.5px;letter-spacing:.07em;padding:4px 8px;white-space:nowrap;top:8px;left:8px}
+  .bacard figcaption{padding:26px 10px 10px}
 }
 </style>
 </head>
 <body>
 
-<div class="announce">🎉 Free Masterclass · <b data-date-short>Wednesday</b> · Save Your Seat</div>
+<div class="announce">🎉 Free Live Masterclass · <b data-date-short>Wednesday</b> · Seats Are Limited</div>
 
 <header class="top wrap">
   <a class="wordmark" href="#" aria-label="Abu Lahya — home">
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2l3.4 7 7.6 1.1-5.5 5.4 1.3 7.6L16 19.5l-6.8 3.6 1.3-7.6L5 10.1 12.6 9z" fill="#2563eb"/></svg>
     ABU LAHYA
   </a>
-  <a class="mini-cta" href="#register" data-open-modal>Save my seat</a>
+  <a class="mini-cta" href="#register" data-open-modal>Claim my seat</a>
 </header>
 
 <main>
@@ -344,22 +338,36 @@ footer .fine{font-size:12.5px;color:var(--faint)}
     <i class="dot" style="--x:6%;--s:10px;--c:#25d366;--d:16s;--dl:-14s"></i>
   </div>
   <div class="wrap">
-    <span class="badge" id="s-badge"><span class="dot" aria-hidden="true"></span>Free Training · No Cost</span>
-    <h1 id="s-headline">How To Make Money <em>So&nbsp;Fast</em> It Feels <em>Haram</em></h1>
+    <span class="badge" id="s-badge"><span class="dot" aria-hidden="true"></span>100% Free · Live on Zoom</span>
+    <h1 id="s-headline">The <em class="g">Halal Skill</em> That Pays Like A <em>Second Salary</em></h1>
     <p class="lede">
-      <span class="halal">100% halal.</span> No face, no audience, no products. Just email.
-      The remote skill that took me from a <strong>€11/hour waiter</strong> to
-      <strong>$10K/month</strong> — and 2,000+ brothers are now doing the same.
+      No face. No audience. No products. One remote email skill took Abu Lahya from
+      <strong>€11/hour restaurant shifts</strong> to <strong>$10K months</strong> —
+      <span class="halal">100% halal.</span> On this free class, he shows exactly how
+      2,000+ brothers are running the same play.
     </p>
+    <div class="ba" id="s-photo">
+      <figure class="bacard before">
+        <img src="../assets/abu-early-days.jpg" alt="Abu Lahya during his triple-shift years" width="480" height="600">
+        <span class="tag">Before</span>
+        <figcaption>€11/hr — Triple shifts, stuck</figcaption>
+      </figure>
+      <div class="ba-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+      <figure class="bacard after">
+        <img src="../assets/abu-founder.jpg" alt="Abu Lahya today" width="480" height="600">
+        <span class="tag">3 months later</span>
+        <figcaption>$10K/mo — halal</figcaption>
+      </figure>
+    </div>
     <div class="count" id="s-count" role="timer" aria-label="Time until the masterclass starts">
-      <span class="lbl">Starts in</span>
+      <span class="lbl">Live in</span>
       <div class="cell"><b data-t="d">00</b><span>days</span></div>
       <div class="cell"><b data-t="h">00</b><span>hrs</span></div>
       <div class="cell"><b data-t="m">00</b><span>min</span></div>
       <div class="cell"><b data-t="s">00</b><span>sec</span></div>
     </div>
-    <button class="cta" id="s-cta" data-open-modal>Yes, save my free seat <span class="arrow">→</span></button>
-    <p class="meta"><b data-date-long>Wednesday</b> · 2PM EST / 7PM UK · 90 min training</p>
     <div class="social" id="s-social">
       <div class="avatars" aria-hidden="true">
         <span class="av" style="background:#2563eb">YA</span>
@@ -368,124 +376,78 @@ footer .fine{font-size:12.5px;color:var(--faint)}
         <span class="av" style="background:#3b82f6">SR</span>
         <span class="av" style="background:#fb923c">AH</span>
       </div>
-      <p><b data-counter="1847">1,847</b> brothers already registered</p>
+      <p><b data-counter="1847">1,847</b> brothers already claimed a seat this week</p>
     </div>
-    <div class="hero-photo" id="s-photo">
-      <div class="frame"><img src="../assets/abu-founder.jpg" alt="Abu Lahya, founder of IMA" width="960" height="1200"></div>
-      <div class="chip c1"><b>$10M+</b><span>Student revenue</span></div>
-      <div class="chip c2"><b>2,000+</b><span>Brothers taught</span></div>
-    </div>
+    <button class="cta big" id="s-cta" data-open-modal>
+      <span>Claim my free seat <span class="arrow">→</span></span>
+      <span class="when">Free · <b data-date-long>Wednesday</b> · 2PM EST / 7PM UK · 90 min</span>
+    </button>
   </div>
 </section>
 
 <!-- stats -->
 <section class="stats" id="s-stats">
   <div class="wrap row">
-    <div class="stat reveal"><b>2,000+</b><span>🤲 Brothers helped</span></div>
+    <div class="stat reveal"><b>2,000+</b><span>🤲 Students taught</span></div>
     <div class="stat reveal"><b>92%</b><span>📈 Success rate</span></div>
     <div class="stat reveal"><b>$10M+</b><span>💰 Student revenue</span></div>
-    <div class="stat reveal"><b>55</b><span>🌍 Team, 7 countries</span></div>
+    <div class="stat reveal"><b>90 min</b><span>⏱ Free · Live on Zoom</span></div>
   </div>
 </section>
 
 <!-- agenda -->
 <section class="section agenda" id="s-agenda">
   <div class="wrap">
-    <p class="eyebrow reveal">Free · On Zoom · 90 minutes</p>
-    <h2 class="reveal">What you'll <em>walk away</em> with</h2>
-    <p class="sub reveal">No fluff, no pitch-fest. Ninety minutes, four things, all of them actionable.</p>
+    <p class="eyebrow reveal">The plan for the class</p>
+    <h2 class="reveal">90 minutes. <em>Four takeaways.</em></h2>
+    <p class="sub reveal">No warm-up act, no pitch marathon. You leave with the full picture — the same night.</p>
     <div class="grid">
       <article class="acard reveal">
         <span class="num">01</span>
-        <h3>The Email Skill</h3>
-        <p>The exact halal model: connect brands with influencers, structure the deals, and take a cut — all over email. No inventory, no audience, no haram.</p>
+        <h3>The model, start to finish</h3>
+        <p>Brands pay you to broker influencer deals over email. No store, no stock, no camera — you're the connector, and the fee is yours.</p>
       </article>
       <article class="acard reveal">
         <span class="num">02</span>
-        <h3>Why nobody sees it coming</h3>
-        <p>No face, no content treadmill, no personal brand. How 2,000+ brothers work quietly behind other people's brands — and get paid like specialists.</p>
+        <h3>Your first deal in 90 days</h3>
+        <p>The week-by-week path from zero: what to learn first, who to email, and when the first payment typically lands.</p>
       </article>
       <article class="acard reveal">
         <span class="num">03</span>
-        <h3>The €11/hr → $10K/mo roadmap</h3>
-        <p>The 90-day path from waiting tables to five figures a month — what to learn, in what order, and the mistakes that cost me six extra months.</p>
+        <h3>The halal line</h3>
+        <p>Exactly where the money comes from and why it's clean — a service fee for real work. No riba, no speculation, no grey-area products.</p>
       </article>
       <article class="acard reveal">
         <span class="num">04</span>
-        <h3>The Halal Filter</h3>
-        <p>How every dollar stays clean: no riba, no gambling, no grey areas. The exact test I run before touching any client, brand or offer.</p>
+        <h3>Ask anything, live</h3>
+        <p>The last stretch is open Q&amp;A. Bring your situation — job, schedule, starting point — and get a straight answer before you log off.</p>
       </article>
     </div>
   </div>
 </section>
 
-<!-- transformation -->
-<section class="section transform wrap" id="s-transform">
-  <p class="eyebrow reveal">The transformation</p>
-  <h2 class="reveal">Same brother. <em class="b">Ninety days</em> apart.</h2>
-  <div class="cards">
-    <article class="tcard before reveal">
-      <span class="tag">Before</span>
-      <p class="big">€11/hr</p>
-      <p>Waiter, stuck. Three jobs to make ends meet — restaurant shifts, weekend bakery, code on the side.</p>
-    </article>
-    <div class="t-arrow reveal" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </div>
-    <article class="tcard after reveal">
-      <span class="tag">3 months later</span>
-      <p class="big">$10K/mo</p>
-      <p>Free &amp; halal. One laptop, a handful of deals, and an inbox that pays.</p>
-    </article>
-  </div>
-</section>
-
-<!-- founder story -->
+<!-- who's teaching -->
 <section class="section founder" id="s-founder">
   <div class="wrap">
-  <p class="eyebrow reveal">Meet the founder</p>
-  <h2 class="reveal">The brother behind the <em class="g">halal</em> online movement</h2>
-  <p class="sub reveal">From €11/hour waiter in France to teaching 2,000+ Muslim brothers the halal way to make money online.</p>
-
-  <div class="chapter reveal">
-    <div class="photo"><img src="../assets/abu-early-days.jpg" alt="Abu Lahya during his 9-5 years" loading="lazy"></div>
-    <div>
-      <h3>The years of <em>refusing to compromise</em></h3>
-      <p>Three years ago, Abu Lahya was working <b>three jobs</b> to make ends meet. Waiter at €11 an hour. Bakery shifts on weekends. Software engineering on the side.</p>
-      <p>Every online business model came with a catch. He started dropshipping — walked away when the products didn't align with his deen. He moved to crypto, actually made money, then <b>deleted the wallet and threw away the Ledger USB with his earnings on it</b>, because he refused to let his rizq come through haram.</p>
-      <p>Six months longer than everyone else. No shortcuts. SubhanAllah — sticking with halal would later give his business a baraka the others never had.</p>
+    <p class="eyebrow reveal">Your instructor</p>
+    <h2 class="reveal">Who's <em>teaching</em></h2>
+    <div class="chapter reveal">
+      <div class="photo"><img src="../assets/abu-journey.jpg" alt="Abu Lahya, founder of IMA Accelerator" loading="lazy"></div>
+      <div>
+        <p class="name"><b>Abu Lahya</b> · Founder, IMA Accelerator</p>
+        <p>Three years ago he was stacking <b>three jobs</b> — restaurant floor at €11 an hour, weekend bakery, code at night — and turning down every online "opportunity" that didn't pass the halal test. He made real money in crypto, then <b>binned the Ledger with the profits still on it</b> rather than keep gains he couldn't stand behind.</p>
+        <p>Then he built something he could stand behind: an email deal-desk connecting brands with influencers, scaled to <b>$30K a month</b> — clean from the first dollar. Today <b>2,000+ students</b> run the same model, the work has been <b>endorsed by well-known scholars</b>, and this class is where he lays the whole thing out.</p>
+      </div>
     </div>
-  </div>
-
-  <div class="chapter flip reveal">
-    <div class="photo"><img src="../assets/abu-journey.jpg" alt="Abu Lahya" loading="lazy"></div>
-    <div>
-      <h3>From one brother to a <em>brotherhood of 2,000+</em></h3>
-      <p>Then he found it: a halal model where he could help <b>brands partner with influencers</b>, structure the deals, and take a cut — over email. No inventory, no audience, no haram.</p>
-      <p>He scaled from waiter wages to <b>$30,000 a month</b> from his laptop, alhamdulillah — and immediately started teaching other brothers so they wouldn't waste years bouncing between haram options like he did.</p>
-      <p>A free community of 17 brothers became a YouTube channel, a full mentorship program, and an education company with a <b>team of 55 across 7 countries</b>. Brothers who've quit their 9-5, made hijrah, and rebuilt their families on halal income.</p>
-      <blockquote>“Staying on your deen and building wealth are not opposites. They go together.”</blockquote>
-    </div>
-  </div>
-
-  <div class="chapter reveal">
-    <div class="photo"><img src="../assets/abu-founder.jpg" alt="Abu Lahya today" loading="lazy"></div>
-    <div>
-      <h3>Endorsed. Proven. <em>Alhamdulillah.</em></h3>
-      <p>Today Abu Lahya has helped over <b>2,000 Muslims</b> launch halal businesses online — a <b>92% success rate</b> and <b>$10M+ in combined student revenue</b>.</p>
-      <p>He's been endorsed by <b>Sheikh Uthman, Sheikh Imran Ibn Mansour, and Abu Bakr The Musafir</b>. He flew the team to Madinah to teach 50 brothers for free, took the whole company to Makkah for Umrah, and spent <b>$250,000 out of his own pocket</b> to ship 10,000 business books to Muslims around the world.</p>
-      <p>On this free masterclass, he breaks the whole model down — live, nothing held back.</p>
-    </div>
-  </div>
   </div>
 </section>
 
 <!-- student wins: videos -->
 <section class="section wins" id="s-wins">
   <div class="wrap">
-    <p class="eyebrow reveal">Real student wins</p>
-    <h2 class="reveal">Brothers who <em>showed up</em></h2>
-    <p class="sub reveal">A few of the 2,000+ Muslim brothers who've gone through IMA. Allahumma barik.</p>
+    <p class="eyebrow reveal">Student results</p>
+    <h2 class="reveal">Receipts, <em>on camera</em></h2>
+    <p class="sub reveal">Three of the 2,000+ students — real names, real numbers, real timelines.</p>
     <div class="grid">
       <article class="wcard reveal">
         <video src="../assets/videos/michael.mp4" preload="metadata" controls playsinline></video>
@@ -518,8 +480,8 @@ footer .fine{font-size:12.5px;color:var(--faint)}
 <!-- proof wall -->
 <section class="wall" id="s-wall">
   <div class="head wrap">
-    <p class="eyebrow reveal">Straight from the community</p>
-    <h2 class="reveal">The wins <em class="b">don't stop</em> posting</h2>
+    <p class="eyebrow reveal">Posted in the community</p>
+    <h2 class="reveal">The wins <em class="b">keep coming</em></h2>
   </div>
   <div class="marquee" data-marquee>
     <img src="../assets/wins/win-01.png" alt="Student win screenshot" loading="lazy">
@@ -576,36 +538,28 @@ footer .fine{font-size:12.5px;color:var(--faint)}
 <!-- FAQ -->
 <section class="section faq" id="s-faq">
   <div class="wrap">
-  <p class="eyebrow reveal">Questions, answered</p>
-  <h2 class="reveal">Before you <em>ask</em></h2>
+  <p class="eyebrow reveal">Objections, handled</p>
+  <h2 class="reveal">Five questions, <em>straight answers</em></h2>
   <div class="list reveal">
     <details>
-      <summary>Is this business model actually halal? <span class="plus">+</span></summary>
-      <p class="a">Yes. You're connecting brands with influencers and taking a cut for the work. <b>No interest, no haram products, no shady industries.</b> The whole model was built by Muslims, for Muslims — and endorsed by major scholars in the ummah. The Halal Filter is the first thing covered on the training.</p>
+      <summary>Is the model actually halal? <span class="plus">+</span></summary>
+      <p class="a">Yes. You're paid a <b>service fee for brokering marketing deals</b> between brands and influencers — no riba, no speculation, no haram products. Where the halal line sits is the first thing drawn on the class.</p>
     </details>
     <details>
-      <summary>Do I need any experience to attend? <span class="plus">+</span></summary>
-      <p class="a">No. The masterclass is built for brothers starting from zero. <b>No audience, no content, no prior experience needed.</b> If you can write an email, you can learn the mechanics.</p>
+      <summary>I've never done anything like this. Can I follow it? <span class="plus">+</span></summary>
+      <p class="a">That's the assumption the class is built on. <b>If you can write a clear email, you have the only prerequisite.</b></p>
     </details>
     <details>
-      <summary>I have a full-time 9-5. Can I really do this on the side? <span class="plus">+</span></summary>
-      <p class="a">Yes. Most brothers doing this started with a 9-5. The work fits around your schedule — lunch breaks, evenings after Isha, weekends. <b>2–3 hours a day is enough to land your first deal.</b></p>
+      <summary>I work full-time. Is there room for this? <span class="plus">+</span></summary>
+      <p class="a">Most students started around a 9-5. <b>A couple of focused hours in the evenings</b> is enough to get a first deal moving.</p>
     </details>
     <details>
-      <summary>I don't have a following or audience. Will this still work? <span class="plus">+</span></summary>
-      <p class="a">Yes. The work is done over email, not in front of a camera. <b>That's the whole point of being the middleman</b> — no following, no content, no personal brand.</p>
+      <summary>Do I need money to start? <span class="plus">+</span></summary>
+      <p class="a">No. The class is free and the model carries <b>no inventory, no ads, no capital at risk</b> — it runs on a laptop and consistency.</p>
     </details>
     <details>
-      <summary>I've tried e-com, FBA, or trading before. How is this different? <span class="plus">+</span></summary>
-      <p class="a">This isn't e-com, FBA, or trading. <b>No inventory, no capital risk, no product to build.</b> The work is email outreach connecting brands with influencers. Most brothers on the training tried something else first — this is the model that finally worked, alhamdulillah.</p>
-    </details>
-    <details>
-      <summary>Is this really free? What's the catch? <span class="plus">+</span></summary>
-      <p class="a">Yes — <b>90 minutes of training, no charge.</b> No catch: Abu Lahya teaches the full model live. If you want help implementing it afterwards, there's a program — but the training stands on its own.</p>
-    </details>
-    <details>
-      <summary>What if I can't make it live? <span class="plus">+</span></summary>
-      <p class="a"><b>The replay is NOT guaranteed, so make sure you show up.</b> Seats are limited on Zoom, and the brothers who show up live get their questions answered. Bring a notebook.</p>
+      <summary>Will there be a replay? <span class="plus">+</span></summary>
+      <p class="a">Don't plan on one. <b>Zoom seats are capped and questions get answered live</b> — treat the date as the deadline.</p>
     </details>
   </div>
   </div>
@@ -614,16 +568,19 @@ footer .fine{font-size:12.5px;color:var(--faint)}
 <!-- final CTA -->
 <section class="section final pattern" id="s-final">
   <div class="wrap">
-    <p class="eyebrow reveal">Your seat is free</p>
-    <h2 class="reveal">One skill. Ninety days. Every dollar <em>halal</em>.</h2>
+    <p class="eyebrow reveal">Last call</p>
+    <h2 class="reveal">Your seat is <em>free</em>. This date isn't.</h2>
     <div class="count reveal" aria-hidden="true">
       <div class="cell"><b data-t="d">00</b><span>days</span></div>
       <div class="cell"><b data-t="h">00</b><span>hrs</span></div>
       <div class="cell"><b data-t="m">00</b><span>min</span></div>
       <div class="cell"><b data-t="s">00</b><span>sec</span></div>
     </div>
-    <button class="cta orange reveal" data-open-modal>Yes, save my free seat <span class="arrow">→</span></button>
-    <p class="urgency reveal"><b data-date-long>Wednesday</b> · 2PM EST / 7PM UK · The replay is <b>NOT</b> guaranteed — show up live.</p>
+    <button class="cta orange big reveal" data-open-modal>
+      <span>Claim my free seat <span class="arrow">→</span></span>
+      <span class="when">Free · <b data-date-long>Wednesday</b> · 2PM EST / 7PM UK · 90 min</span>
+    </button>
+    <p class="urgency reveal"><b data-date-long>Wednesday</b> · 2PM EST / 7PM UK · No promised replay — be in the room live.</p>
   </div>
 </section>
 </main>
@@ -647,8 +604,8 @@ footer .fine{font-size:12.5px;color:var(--faint)}
 </footer>
 
 <div class="sticky-cta" id="stickyCta" aria-hidden="true">
-  <p class="t">Free masterclass starts in<br><b data-mini-count>--:--:--</b></p>
-  <button class="cta" data-open-modal>Save my seat →</button>
+  <p class="t">Live class starts in<br><b data-mini-count>--:--:--</b></p>
+  <button class="cta" data-open-modal>Claim my seat →</button>
 </div>
 
 <!-- registration modal -->
@@ -658,29 +615,36 @@ footer .fine{font-size:12.5px;color:var(--faint)}
     <div class="badges" aria-hidden="true">
       <span>★ 100% Free</span><span>💻 On Zoom</span><span>⏱ 90 Min Training</span>
     </div>
-    <h3 id="regTitle">Register Your Spot Now</h3>
-    <p class="note">Just enter your name, email &amp; number to lock in your free seat.
-      The replay is <b>NOT</b> guaranteed, so make sure you show up.</p>
+    <h3 id="regTitle">Claim your free seat</h3>
+    <p class="note">Zoom link by email, reminders on WhatsApp — <b>show up live.</b></p>
 
     <form id="regForm" novalidate>
       <div class="field">
         <label for="f-name">First name</label>
         <input id="f-name" name="name" type="text" autocomplete="given-name" placeholder="Yusuf" required>
-        <p class="fielderr">Please enter your name.</p>
+        <p class="fielderr">Tell us your first name.</p>
       </div>
       <div class="field">
         <label for="f-email">Email</label>
         <input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required>
-        <p class="fielderr">That email doesn't look right.</p>
+        <p class="fielderr">That email looks off — double-check it.</p>
       </div>
       <div class="field">
         <label for="f-phone">Phone (WhatsApp)</label>
         <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+44 7…" required>
-        <p class="fielderr">Please enter a valid number (with country code).</p>
+        <p class="fielderr">Add a valid number with country code.</p>
       </div>
-      <button class="cta" type="submit">Yes, save my free seat <span class="arrow">→</span></button>
-      <p class="tiny">The Zoom link, reminders and your free bonus arrive on WhatsApp — that's why we ask for your number.</p>
+      <button class="cta" type="submit">Claim my free seat <span class="arrow">→</span></button>
+      <p class="tiny">Your number is only used for class reminders on WhatsApp — nothing else.</p>
     </form>
+
+    <div class="success" id="regSuccess" role="status" hidden>
+      <div class="check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>
+      </div>
+      <h4>You're on the list!</h4>
+      <p>Zoom link incoming — check your inbox and show up live.</p>
+    </div>
   </div>
 </div>
 
@@ -710,7 +674,7 @@ footer .fine{font-size:12.5px;color:var(--faint)}
   ld.textContent = JSON.stringify({
     "@context":"https://schema.org","@type":"Event",
     "name":"The Halal Money Masterclass",
-    "description":"Free 90-minute training on the remote email skill. 100% halal — no face, no audience, no products.",
+    "description":"Free 90-minute live class on Zoom. The halal email skill that pays like a second salary — no face, no audience, no products.",
     "startDate": eventAt.toISOString(),
     "eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode",
     "isAccessibleForFree": true,
@@ -771,7 +735,7 @@ footer .fine{font-size:12.5px;color:var(--faint)}
     requestAnimationFrame(function(){ overlay.classList.add("open"); });
     document.body.style.overflow = "hidden";
     var first = modal.querySelector("input");
-    if (first) setTimeout(function(){ first.focus(); }, 120);
+    if (first && !modal.classList.contains("done")) setTimeout(function(){ first.focus(); }, 120);
   }
   function closeModal(){
     overlay.classList.remove("open");
@@ -797,10 +761,11 @@ footer .fine{font-size:12.5px;color:var(--faint)}
     }
   });
 
-  /* ---------- form: validate → (optional webhook) → real funnel confirmation ---------- */
-  var CONFIRMATION_URL = "https://event.imaccelerator.com/confirmation/";
+  /* ---------- form: validate → (optional webhook) → in-modal success ---------- */
   var FUNNEL_VERSION = "v1-flashy";
-  var WEBHOOK_URL = ""; // optional: CRM/webhook (GHL, Zapier, Make, Close) fires before redirect
+  var WEBHOOK_URL = ""; // Production: point this at the CRM (GHL, Zapier, Make, Close). The payload carries
+                        // funnel_version for split-testing, and the confirmation-page handoff wires in at the
+                        // same point. The demo shows an in-modal success state instead of redirecting.
 
   var form = document.getElementById("regForm");
   function setErr(input, on){
@@ -827,29 +792,30 @@ footer .fine{font-size:12.5px;color:var(--faint)}
     if (WEBHOOK_URL){
       fetch(WEBHOOK_URL, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)}).catch(function(){});
     }
-    var q = new URLSearchParams({
-      name: payload.name, email: payload.email, phone: payload.phone, funnelVersion: FUNNEL_VERSION
-    });
-    setTimeout(function(){ location.href = CONFIRMATION_URL + "?" + q.toString(); }, 450);
+    setTimeout(function(){
+      modal.classList.add("done");
+      document.getElementById("regSuccess").hidden = false;
+      var close = modal.querySelector(".close");
+      if (close) close.focus();
+    }, 500);
   });
 })();
 </script>
 
-<!-- design-rationale tour -->
+<!-- variation-rationale tour -->
 <script>
 window.TOUR_STEPS = [
-  {sel:".announce", title:"Scarcity starts above the pixel fold", body:"The announce bar restates the event date and the single action (save your seat) before any scrolling happens. It also auto-updates — a stale date is the fastest way to kill trust on a webinar page."},
-  {sel:"#s-headline", title:"The hook is proven — so it stays", body:"This headline is the control from the original funnel. It's a pattern interrupt with a built-in objection ('feels haram') that the rest of the page answers. When copy is already converting, you redesign around it, not over it."},
-  {sel:"#s-count", title:"A countdown that never lies", body:"The timer computes the next real Wednesday 2PM EST slot in the visitor's browser. No fake evergreen timer that resets on refresh — this audience is skeptical of exactly that trick, and trust is the currency here."},
-  {sel:"#s-cta", title:"First-person CTA, one action", body:"'Yes, save MY free seat' converts better than imperative labels because the visitor completes the sentence in their own head. There is exactly one action on this page — every button opens the same form."},
-  {sel:"#s-social", title:"Proof clustered at the decision point", body:"Registered count and faces sit directly under the CTA, not in a separate section — social proof works hardest within eye-distance of the button."},
-  {sel:"#s-photo", title:"A real face, real numbers", body:"The founder's actual photo replaces stock imagery, with the two most credible stats floating on it. For an audience burned by anonymous gurus, the face IS the offer."},
-  {sel:"#s-transform", title:"Identity, not features", body:"Before/after sells the transformation (waiter → free & halal), not the mechanism. The mechanism is the masterclass's job; the page's job is to make the visitor see themselves on the left card."},
-  {sel:"#s-founder", title:"The trust anchor for a skeptical niche", body:"The 'threw away the Ledger with his earnings on it' story is the single most persuasive element for this audience — it proves values before profit. That's why it gets real photos and three chapters, not one paragraph."},
-  {sel:"#s-wins", title:"Specific wins beat big claims", body:"Real names, real faces on video, specific numbers and timelines ($40K in 6 weeks) — specificity is what separates proof from claims. Videos are lazy-loaded so they don't tax the first paint."},
-  {sel:"#s-wall", title:"Volume proof", body:"The marquee of community screenshots proves the wins aren't cherry-picked — there are too many to read. Motion pauses on hover and disables for reduced-motion users."},
-  {sel:"#s-faq", title:"The FAQ kills the top objection first", body:"'Is this actually halal?' is question #1 because it's THE objection for this offer. The order of an FAQ is a ranked list of reasons people don't buy."},
-  {sel:"#regForm", title:"Phone field, justified", body:"Asking for a phone number costs conversion — unless you explain it. The microcopy says exactly why: the funnel runs on WhatsApp. On submit, the form hands off to the real confirmation flow carrying funnelVersion=v1-flashy, so design variants can be split-tested downstream."}
+  {sel:".announce", title:"Variation hypothesis: two scarcities beat one", body:"The control's bar restates the date and the action. This variant stacks capacity scarcity ('seats are limited') on top of time scarcity. The date still auto-computes in the browser — urgency claims stay true in every variant, or the test is meaningless."},
+  {sel:"#s-headline", title:"Variation hypothesis: believable beats shocking", body:"The control leads with income-speed shock ('so fast it feels haram') — a pattern interrupt tuned for warm traffic. This variant promises a familiar, checkable quantity instead: a second salary. Hypothesis: cold traffic converts better on believability than on shock."},
+  {sel:"#s-photo", title:"Variation hypothesis: show the arc, don't narrate it", body:"The control tells the €11/hr → $10K/mo story in a mid-page text section. This variant compresses it into two photos in the first viewport — desaturated 'before', warm 'after'. If the transformation lands visually, the page needs half the words."},
+  {sel:"#s-count", title:"Held constant: an honest timer", body:"Every variant computes the real next Wednesday 2PM EST slot in the visitor's browser. A fake evergreen countdown would poison the whole split test — timers are a constant here, never a variable."},
+  {sel:"#s-social", title:"Variation hypothesis: proof before the ask", body:"Both variants keep the registered count within eye-distance of the CTA. This one flips the order — faces and count come BEFORE the button, so the ask is the last thing read, not the first."},
+  {sel:"#s-cta", title:"Variation hypothesis: answer 'when?' and 'how much?' inside the button", body:"The two silent objections at click time are cost and timing. This variant prints 'Free' and the live date inside the CTA itself, so the click decision needs zero extra scanning. The control kept the date on a separate line below."},
+  {sel:"#s-agenda", title:"Variation hypothesis: takeaways beat topics", body:"Each agenda card is written as something you leave with — the full model, a 90-day path, the halal line, live answers — instead of lecture titles. Outcome framing is the test; the four slots are the constant."},
+  {sel:"#s-founder", title:"Variation hypothesis: short page, fast yes", body:"The control tells the founder story across three photo chapters. This variant compresses it to one block with the two beats that carry all the trust (binned the haram crypto gains; built the halal deal-desk to $30K/mo). Long-form trust vs short-form momentum — that's the A/B."},
+  {sel:"#s-wins", title:"Held constant: real receipts", body:"Video testimonials, the community marquee and Trustpilot reviews appear in every variant — real proof assets are constants, only the framing copy around them changes. Specific numbers and timelines do the convincing."},
+  {sel:"#s-faq", title:"Variation hypothesis: five objections, answered fast", body:"The control runs seven long FAQ entries; this one keeps the five that actually block registration (halal, experience, time, money, replay) at one or two sentences each. An FAQ is friction removal, not documentation."},
+  {sel:"#regForm", title:"No fake handoff in the demo", body:"On valid submit this variant shows an in-modal success state — the demo never pretends to hit a live funnel. In production the webhook stub fires to the CRM carrying funnel_version=v1-flashy, and the real confirmation handoff wires in at the same point."}
 ];
 </script>
 <script src="../shared/tour.js"></script>
