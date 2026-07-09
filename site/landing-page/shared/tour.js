@@ -100,5 +100,7 @@
   }
 
   launch.addEventListener("click", start);
-  if (/[?&]tour=1/.test(location.search)) setTimeout(start, 800);
+  /* Auto-start on load so reviewers meet the rationale immediately.
+     Suppress with ?tour=0; Esc or "End tour" dismisses. */
+  if (!/[?&]tour=0/.test(location.search)) setTimeout(start, 1100);
 })();
